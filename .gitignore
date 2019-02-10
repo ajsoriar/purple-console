@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .sass-cache
 .project
 _.*
@@ -34,3 +35,31 @@ jquery.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+=======
+.sass-cache
+.project
+_.*
+.DS_Store
+Thumbs.db
+.settings
+/.gitmodules
+.tmp
+.idea
+OLD*
+node_modules
+bower_components
+*.log
+.map
+.wgt
+.tproject
+*.rar
+.zip
+dist
+dist/
+.lock
+.sign
+*.wgt
+.vscode
+package.json
+yarn.lock
+>>>>>>> 0740c5e... .gitignore
