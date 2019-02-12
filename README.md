@@ -1,2 +1,22 @@
 # purple-console
-Light javascript component to do logging stuff right to the WEB UI, without the need of developer tools. It can be useful when dealing with special hardware like mobile devices or TV's. Data can be rendered in a div, a canvas or a textarea. There is an API to set start points and LAPs in order to do benchmarking and print the results in the console. Several consoles can be launched and the look and feel can be personalised.
+
+javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
+
+## Install
+
+    npm i purple-console
+    yarn add purple-console
+
+## Basic configuration
+
+    In your HTML: <script src="./node_modules/purple-console/src/purple-console.js"></script>
+
+    In your js code: log("Hello world!");
+
+## Data can be rendered in a div, a canvas or a textarea.
+
+## Set start points and LAPs in order to do benchmarking and print the results in the console. 
+
+##Launch several consoles
+
+##Change the look and feel.
