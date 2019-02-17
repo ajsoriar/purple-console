@@ -13,10 +13,12 @@ javascript component that prints logs in a DIV layer. It can be useful when deal
 
     In your js code: log("Hello world!");
 
-## Data can be rendered in a div, a canvas or a textarea.
+## Data can be rendered in a div, canvas or textarea
 
-## Set start points and LAPs in order to do benchmarking and print the results in the console. 
+## Set start points and LAPs in order to do benchmarking and print the results in the console
 
-##Launch several consoles
+    ajsrConsole.setLap("LAP TEXT!");
 
-##Change the look and feel.
+## Launch several consoles
+
+## Change the look and feel
