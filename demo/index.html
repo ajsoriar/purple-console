@@ -14,19 +14,35 @@
     <b>purple-console.js demo</b>
     <script src="../src/purple-console.js"></script>
     <script>
-        function countDown(counter) {
+        var counter = 1000;
 
+        function countDown() {
             if (counter > 0) {
                 setTimeout(function () {
-                    
+
                     //console.log(counter);
-                    log("Hello world! counter: "+ counter);
+                    log("Hello world! counter: " + counter);
                     counter--;
                     countDown(counter);
-                }, 300);
+                }, 100);
             }
         }
-        countDown(1000);
+        countDown();
+
+        var lap = 0;
+        function addLap() {
+            if (counter > 0) {
+                setTimeout(function () {
+                    lap++;
+                    ajsrConsole.setLap("LAP " + lap);
+                    addLap();
+                }, 9000);
+            } else {
+                ajsrConsole.printLaps();
+            }
+        }
+        addLap();
+
     </script>
 </body>
 

@@ -112,19 +112,16 @@
             //if (params) {
               var t = getTimeString();
             //}
-
             var el = document.getElementById("ajsrConsole-screen");
             el.innerHTML = el.innerHTML + "<br>" + value;
-            console.log( t+ "value:", value);
-            console.log( t+ "el:", el);
+            //console.log( t+ "value:", value);
+            //console.log( t+ "el:", el);
             var el = document.getElementById("ajsrConsole");
             el.scrollTop = el.scrollHeight;
           },
           cls: function () {
             console.log("[ajsrConsole] cls!");
-            //console.log("[ajsrConsole] value:", value);
             var el = document.getElementById("ajsrConsole");
-            //console.log("[ajsrConsole] el:", el);
             el.innerHTML = "";
           },
           // set max lines,
@@ -134,7 +131,7 @@
 
           startTime: function () { // ajsrConsole.startTime()
             this.data.startTime = Date.now();
-            this.log( this.getTimeString() +"Time stats now!");
+            this.log( getTimeString() +"Time stats now!");
             this.data.laps = [{
               label: "Time starts here!",
               timestamp: this.data.startTime,
@@ -147,7 +144,7 @@
 
             var now = Date.now();
             var elapsed = now - this.data.startTime;
-            this.log(this.getTimeString() +label+"; Seconds elapsed: " + elapsed / 1000 + " s.");
+            this.log( getTimeString() +label+"; Seconds elapsed: " + elapsed / 1000 + " s.");
 
             var obj = {
               label: label,
@@ -156,6 +153,12 @@
             }
 
             this.data.laps.push( obj );
+            return obj;
+          },
+          printLaps: function (){
+            var str = this.data.laps;
+            this.log( JSON.stringify(str));
+            return str;
           }
 
         }
