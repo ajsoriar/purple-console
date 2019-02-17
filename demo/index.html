@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>purple-console.js demo</title>
+
+
+</head>
+
+<body>
+    <b>purple-console.js demo</b>
+    <script src="../src/purple-console.js"></script>
+    <script>
+        function countDown(counter) {
+
+            if (counter > 0) {
+                setTimeout(function () {
+                    
+                    //console.log(counter);
+                    log("Hello world! counter: "+ counter);
+                    counter--;
+                    countDown(counter);
+                }, 300);
+            }
+        }
+        countDown(1000);
+    </script>
+</body>
+
+</html>

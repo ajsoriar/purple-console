@@ -116,8 +116,9 @@
             var el = document.getElementById("ajsrConsole-screen");
             el.innerHTML = el.innerHTML + "<br>" + value;
             console.log( t+ "value:", value);
-            //
             console.log( t+ "el:", el);
+            var el = document.getElementById("ajsrConsole");
+            el.scrollTop = el.scrollHeight;
           },
           cls: function () {
             console.log("[ajsrConsole] cls!");
