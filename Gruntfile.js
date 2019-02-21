@@ -1,4 +1,3 @@
-
 'use strict';
 
 module.exports = function(grunt) {
@@ -42,6 +41,12 @@ module.exports = function(grunt) {
                 }
             }
         },
+        // concat: {
+        //     dist: {
+        //         src: ['src/purple-console.js', 'src/header.js'],
+        //         dest: 'dist/purple-console.min.js',
+        //     },
+        // },
         cssmin: {
             target: {
                 files: [{
@@ -60,12 +65,26 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    //grunt.loadNpmTasks('grunt-contrib-concat');
 
     // Define tasks
     grunt.registerTask( 
         'build',
         'Compiles all of the assets and files to dist directory.',
+        //['clean', 'copy', 'uglify', 'cssmin', 'concat']
         ['clean', 'copy', 'uglify', 'cssmin']
     );
+
+    // grunt.registerTask( 
+    //     'clean',
+    //     'Clean dist directory.',
+    //     ['clean']
+    // );
+    
+    // grunt.registerTask( 
+    //     'concat',
+    //     'hello',
+    //     ['clean', 'concat']
+    // );
 
 };

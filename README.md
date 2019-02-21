@@ -1,6 +1,6 @@
 # purple-console
 
-javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
+Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
 
 ## Install
 
@@ -22,3 +22,16 @@ javascript component that prints logs in a DIV layer. It can be useful when deal
 ## Launch several consoles
 
 ## Change the look and feel
+
+## Development
+
+### Install node
+
+### Install grunt globally
+
+$ sudo npm install --unsafe-perm=true --allow-root
+$ sudo npm install -g grunt-cli
+
+### Build
+
+$ grunt build

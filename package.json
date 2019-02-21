@@ -1,7 +1,7 @@
 {
   "name": "purple-console",
-  "version": "1.0.0",
-  "description": "javascript component to do logging stuff in the WEB UI, without the need of developer tools. It can be useful when dealing with special hardware like mobile devices or TV's. Data can be rendered in a div, a canvas or a textarea. There is an API to set start points and LAPs in order to do benchmarking and print the results in the console. Several consoles can be launched and the look and feel can be personalised.",
+  "version": "1.0.1",
+  "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
   "main": "dist/purple-consoli.min.js",
   "repository": "https://github.com/ajsoriar/purple-console.git",
   "author": "asr <ajsoriar@gmail.com>",
