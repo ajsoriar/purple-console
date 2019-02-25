@@ -4,6 +4,13 @@
   "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
   "main": "dist/purple-consoli.min.js",
   "repository": "https://github.com/ajsoriar/purple-console.git",
+  "keywords": [
+    "console.log",
+    "javascript-console",
+    "js-console",
+    "log",
+    "console"
+  ],
   "author": "asr <ajsoriar@gmail.com>",
   "license": "MIT",
   "devDependencies": {
