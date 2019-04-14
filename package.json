@@ -1,6 +1,6 @@
 {
   "name": "purple-console",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
   "main": "dist/purple-consoli.min.js",
   "repository": "https://github.com/ajsoriar/purple-console.git",
@@ -23,10 +23,6 @@
     "grunt-contrib-uglify": "~0.2.2"
   },
   "scripts": {
-    "start-watch": "nodemon run-babel index.js",
-    "wp-server": "webpack-dev-server",
-    "dev": "concurrently --kill-others \"npm run start-watch\" \"npm run wp-server\"",
     "build": "grunt build"
   }
-  
 }
