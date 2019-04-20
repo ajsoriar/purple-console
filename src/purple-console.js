@@ -16,12 +16,14 @@
 
         var defaults = {
             opacity: false,
-            useColors: false,
+            useColors: false, // When colors are used, div layers are generated on every log operation. I've noticed that when there are around 100 the UI gets slower and slower very fast, on every additional attachment of divs.
+            autoRemoveOldDivs: null,
             printTime: false,
             bgColor: "#37006b",
             borderColor: "#ef3ffd",
             textColor: "white",
-            corner: null
+            corner: null,
+            maxObjLength: 5
         };
 
         //var colorModeOn = false; //"NO_COLOR";
@@ -106,6 +108,151 @@
 
         }
 
+        // ----------------------------------------
+        //    Core logging functions start here   -
+        // ----------------------------------------
+
+        var log = function (str, color,indentation) {
+
+            // include time
+            var t = getTimeString();
+            if (defaults.printTime === true) str = t + ": " + str;
+
+            write(str, color);
+
+            // GO Pixel: Rest end point
+
+            /*
+
+            var pixelHost = "192.168.69.23";
+            var pixepPort = "9000";
+
+            // var URL = "http://192.168.69.23:9000/ajaxlog";
+            // ajsrRequest( "POST", URL, null );
+
+            // GO Pixel: Params example
+            var BASE_URL = "http://192.168.69.23:9000";
+            var params = '?timestamp=123'+
+                        '&'+ 'type=INFO'+
+                        '&'+ 'tag=STB'+
+                        '&'+ 'text=Hello World';
+
+            ajsrRequest( "GET", BASE_URL +"/imglog/log.jpg", params );
+
+            */
+
+        };
+
+        var write = function(str, color) {
+            if (defaults.useColors == true && color != null) {
+                attachHTML( '<span style="color:' + color + '">' + str + '</span><br>' );
+            } else {
+                attachHTML( str + "<br>" );
+            }
+        };
+
+        var error = function(str){
+            attachHTML( '<span style="color:red">' + str + '</span><br>' );
+        };
+
+        var success = function(str){
+            attachHTML( '<span style="color:limegreen">' + str + '</span><br>' );
+        };
+
+        var attachHTML = function(str) {
+
+            /*
+                // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
+
+                el.innerHTML += str;
+                refreshScroll();
+            */
+
+            delayedAttachHTML(str); /// This approach is Key to stop freezing the UI! Many innerHTML operations in a loop end up breaking the user experience.
+        };
+
+        var previousPrintAtemptTiemstamp = 0;
+        var printAtemptTimeBoundary = 500;
+        var printAtemptBuffer = '';
+
+        var delayedAttachHTML = function(str) { // This function is Key to stop freezing the UI! many innerHTML operations in a loop end up breaking the user experience.
+            
+            var currentPrintAtemptTiemstamp = Date.now();
+            if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
+                el.innerHTML = printAtemptBuffer + str;
+                printAtemptBuffer = '';
+                refreshScroll();
+            } else {
+                printAtemptBuffer += str;
+                
+            }
+            previousPrintAtemptTiemstamp = currentPrintAtemptTiemstamp;
+        };
+
+        var refreshScroll = function() {
+            el.scrollTop = el.scrollHeight;
+        };
+
+        var br = function(){
+            attachHTML("<br>");
+        };
+
+        // ----------------------------------------
+        //    Core logging functions end here     -
+        // ----------------------------------------
+
+        var filterJSErrors = function() {
+
+            // this 
+            
+            window.onerror = function(message, url, lineNumber) {  
+                //save error and send to server for example.
+    
+                message = "JS ERROR: In line "+ lineNumber +": "+ message;
+    
+                try {
+                    //console.log(message);
+                    this.log(message, "red");
+    
+                } catch (error) {
+                    
+                }
+    
+                //returning true will prevent the firing of the default handler, 
+                // and returning false will let the default handler run.
+                //return true;
+    
+                return false;
+            };
+
+        };
+
+        var printObj = function(o){
+
+            var MAX_LEN = defaults.maxObjLength; //100; //5; //defaults.maxObjLength;
+
+            if (o !== Object(o)) {
+                write('Not an object!', "red");
+                return;
+            }
+            var k=[],p,str;
+            for (p in o) { if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p); }
+
+            var lon = k.length;
+
+            if  (lon > MAX_LEN) {
+                //write('<b>Sorry, this is a big object!</b>');
+                write('<b>Sorry, this object has more than '+ MAX_LEN +" properties. </b>Please use 'setMaxObjLength()' to print bigger objets","red");
+                return;
+            }
+            str = '<div style="padding:2px 5px;border:1px solid gray">';
+            for ( var i=0; i<lon; i++ ) {
+                str += JSON.stringify(k[i]) +': <span style="color:yellow">'+ JSON.stringify(o[k[i]]) +"</span><br>";   
+            }
+            str += '</div>';
+            write(str);
+        };
+
         return {
             el: null,
             data: {
@@ -123,39 +270,7 @@
                     mode: "HTML"
                 });
             },
-
-            /**
-                ajsrConsole.log("Hello world!", {color:"red"});
-                ajsrConsole.log("Hello world!", {color:"#FF0099"});
-            */
-            log: function (str, color) {
-                var t = getTimeString();
-                if (defaults.printTime == true) str = t + ": " + str;
-                if (defaults.useColors == true && color != null) {
-                    el.innerHTML += '<span style="color:' + color + '">' + str + '</span><br>';
-                } else {
-                    el.innerHTML += str + "<br>";
-                    //el.innerHTML += str + "<br>";
-                }
-                //var el = document.getElementById("ajsrConsole");
-                el.scrollTop = el.scrollHeight;
-            },
-
-            // objPrint: function(o){
-            //     if (o !== Object(o)) {
-            //         this.log('Not an object!', "red");
-            //         return;
-            //     }
-            //     var k=[],p,str;
-            //     for (p in o) { if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p); }
-            //     str = '<div style="padding:2px 5px;border:1px solid gray">';
-            //     for (i=0; i<k.length; i++ ) {
-            //         str += JSON.stringify(k[i]) +': <span style="color:yellow">'+ JSON.stringify(o[k[i]]) +"</span><br>";   
-            //     }
-            //     str += '</div>';
-            //     this.log(str);
-            // },
-
+            log: log,
             cls: function () {
                 console.log("[ajsrConsole] cls!");
                 //var el = document.getElementById("ajsrConsole");
@@ -195,11 +310,10 @@
                 this.setTextColor(defaults.textColor);
             },
             setLogAlias: function (str) {
-                /* 
-                  setLogAlias("debug");
-                  debug("Hello world!")
-                */
+                //window[str] = window.ajsrConsole.log;
                 window[str] = window.ajsrConsole.log;
+                window[str].printObj = window.ajsrConsole.printObj;
+                window[str].br = window.ajsrConsole.br;
             },
             setBgColor: function (color) {
                 el.style.backgroundColor = color;
@@ -263,6 +377,7 @@
                     c.style.height = "66%";
                 }
                 console.log("c.style.height:", c.style.height);
+                refreshScroll();
             },
 
             setSize: function (w, h) {
@@ -332,8 +447,17 @@
                 var str = this.data.laps;
                 this.log(JSON.stringify(str));
                 return str;
-            }
-
+            },
+            filterJSErrors: filterJSErrors,
+            printObj: printObj,
+            write: write,
+            error:error,
+            success: success,
+            setMaxObjLength: function(num) {
+                defaults.maxObjLength = num;
+                success("maxObjLength was set to "+ num +"!" );
+            },
+            br: br
         };
     };
 
@@ -341,34 +465,59 @@
     window.log = window.ajsrConsole.log;
 
     // Ussage example:
-    // > ajsrConsole.log("Hello world!")
+    // > ajsrConsole.log("Hello world!");
 
 }());
 
-
 /*
+ajsrConsole.filterJSErrors();
+//throw new Error("this is not an error");
 ajsrConsole.setLogAlias("debug");
 ajsrConsole.setBgColor("rgba(0,0,150,1)");
 ajsrConsole.setBorderColor("rgba(0,255,255,1)");
-ajsrConsole.setTextColor("rgba(255,255,255,1)");
-ajsrConsole.togleOpacity();
-
+ajsrConsole.setTextColor("rgba(255,255,255,1)");                                                                          
+ajsrConsole.toggleOpacity();
 ajsrConsole.printTime();
-debug("LOL");
+debug("CONSOLE");
 ajsrConsole.printTime(false);
-
 ajsrConsole.move("UP");
 ajsrConsole.move("LEFT");
 ajsrConsole.move("RIGHT");
 ajsrConsole.autoHeight();
-
 ajsrConsole.useColors();
-debug("LOL !!!");
-debug("LOL color1", "yellow");
+debug("CONSOLE !!!");
+debug("CONSOLE color1", "yellow");
 ajsrConsole.printTime();
 ajsrConsole.useColors(false);
-
-debug("LOL color2", "yellow");
-ajsrConsole.togleOpacity();
+debug("CONSOLE color2", "yellow");
+ajsrConsole.toggleOpacity();
 ajsrConsole.setSize(400,500);
+ajsrConsole.useColors();
+debug("Start!!", "green");
+ajsrConsole.error("ERROR");
+ajsrConsole.success("SUCCESS");
+//ajsrConsole.useColors(false);
+
+var myObj = {
+    "1": "a-11",
+    "2": "a-11",
+    "3": "a-11",
+    "4": "a-11",
+    "5": "a-11",
+    "6": "a-11"
+};
+
+//ajsrConsole.printObj(myObj);
+
+var myObj = {
+    "1": "a-11",
+    "2": "a-11",
+    "3": {
+        "b1": "b-11",
+        "b2": "b-11",
+        "b3": "b-11",
+    }
+};
+
+debug.printObj(myObj);
 */
