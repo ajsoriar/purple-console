@@ -7,6 +7,86 @@
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+
+/*
+var xhr = null;
+	 
+var ajsrRequest = function (method, url, params) {
+
+    "use strict";
+    
+    console.log("DO");
+
+	xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+
+		if (xhr.readyState === 1) {
+			//console.log("xhr.onreadystatechange, 1");
+		} 
+
+		if (xhr.readyState === 2) {
+			//console.log("xhr.onreadystatechange, 2");
+		}
+
+		if (xhr.readyState === 3) {
+			//console.log("xhr.onreadystatechange, 3");
+		} 
+
+		if (xhr.readyState === 4) {
+
+			//console.log("xhr.onreadystatechange, 4");
+
+			if ( xhr.status === 200) {
+                //console.log("xhr.onreadystatechange, 200");
+                ajsrConsole.success("200 OK, XMLHttpRequest to:"+ url);
+			} else {
+                //console.log("xhr.onreadystatechange, !200");
+                ajsrConsole.error("ERROR, XMLHttpRequest to:"+ url);
+			}
+			
+		} 
+    };
+
+    var getParams = null;
+    var postParams = null;
+
+    if ( method === "GET" ) {
+        getParams = params;
+        url = url + getParams;
+    } else if ( method === "POST"){
+        postParams = params;
+    }
+    
+	xhr.open(method, url, true); // 3rd parameter: async
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	
+	// The XMLHttpRequest.withCredentials property is a Boolean that indicates whether or 
+	// not cross-site Access-Control requests should be made using credentials such as cookies, 
+	// authorization headers or TLS client certificates. Setting withCredentials has no effect 
+	// on same-site requests.
+	
+    xhr.withCredentials = false; //true; // false gets rid of cors error in some cases
+
+	xhr.send(postParams);
+};
+
+function cancelRequest() { 
+	xhr.abort();
+	xhr = null;
+}
+
+*/
+
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------- */
+
+
 (function () {
     console.log("[ajsrConsole] plug-in!");
 
