@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         clean: {
             build: {
-                src: ['dist/*.*','dist/css/*.*','src/css/*.css']
+                src: ['dist/*.*']
             }
         },
         copy: {
@@ -17,14 +17,8 @@ module.exports = function(grunt) {
                     ],
                     dest: 'dist',
                     expand: true
-                },{
-                    cwd: 'src/css',
-                    src: [
-                        '*.css'
-                    ],
-                    dest: 'dist/css',
-                    expand: true
-                }]
+                }
+                ]
             }
         },
         uglify: {
@@ -39,52 +33,43 @@ module.exports = function(grunt) {
                 files: {
                     'dist/purple-console.min.js': ['dist/purple-console.js']
                 }
+            },
+        },
+        remove_comments: {
+            js: {
+                options: {
+                    multiline: true,
+                    singleline: true,
+                    keepSpecialComments: false
+                },
+                cwd: 'dist',
+                src: 'purple-console.js',
+                expand: true,
+                dest: 'dist'
             }
         },
-        // concat: {
-        //     dist: {
-        //         src: ['src/purple-console.js', 'src/header.js'],
-        //         dest: 'dist/purple-console.min.js',
-        //     },
-        // },
-        cssmin: {
-            target: {
-                files: [{
-                    expand: true,
-                    cwd: 'dist/css',
-                    src: ['*.css', '!*.min.css'],
-                    dest: 'dist/css',
-                    ext: '.min.css'
-                }]
-            }
-        }
+        concat: {
+            options: {
+              //separator: ';',
+            },
+            dist: {
+              src: ['src/header.txt', 'dist/purple-console.js'],
+              dest: 'dist/purple-console.js',
+            },
+          },
+
     });
 
-    // Include functionality
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    //grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-remove-comments');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
-    // Define tasks
     grunt.registerTask( 
         'build',
         'Compiles all of the assets and files to dist directory.',
-        //['clean', 'copy', 'uglify', 'cssmin', 'concat']
-        ['clean', 'copy', 'uglify', 'cssmin']
+        ['clean', 'copy', 'remove_comments:js', 'concat', 'uglify' ]
     );
-
-    // grunt.registerTask( 
-    //     'clean',
-    //     'Clean dist directory.',
-    //     ['clean']
-    // );
-    
-    // grunt.registerTask( 
-    //     'concat',
-    //     'hello',
-    //     ['clean', 'concat']
-    // );
 
 };
