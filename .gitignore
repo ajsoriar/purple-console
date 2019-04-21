@@ -27,9 +27,6 @@ yarn-error.log*
 .tproject
 *.rar
 .zip
-dist
-dist/
-.lock
 .sign
 *.wgt
 .vscode

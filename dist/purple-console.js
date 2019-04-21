@@ -1,81 +1,11 @@
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
-
-/*
-var xhr = null;
-	 
-var ajsrRequest = function (method, url, params) {
-
-    "use strict";
-    
-    console.log("DO");
-
-	xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-
-		if (xhr.readyState === 1) {
-			//console.log("xhr.onreadystatechange, 1");
-		} 
-
-		if (xhr.readyState === 2) {
-			//console.log("xhr.onreadystatechange, 2");
-		}
-
-		if (xhr.readyState === 3) {
-			//console.log("xhr.onreadystatechange, 3");
-		} 
-
-		if (xhr.readyState === 4) {
-
-			//console.log("xhr.onreadystatechange, 4");
-
-			if ( xhr.status === 200) {
-                //console.log("xhr.onreadystatechange, 200");
-                ajsrConsole.success("200 OK, XMLHttpRequest to:"+ url);
-			} else {
-                //console.log("xhr.onreadystatechange, !200");
-                ajsrConsole.error("ERROR, XMLHttpRequest to:"+ url);
-			}
-			
-		} 
-    };
-
-    var getParams = null;
-    var postParams = null;
-
-    if ( method === "GET" ) {
-        getParams = params;
-        url = url + getParams;
-    } else if ( method === "POST"){
-        postParams = params;
-    }
-    
-	xhr.open(method, url, true); // 3rd parameter: async
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	
-	// The XMLHttpRequest.withCredentials property is a Boolean that indicates whether or 
-	// not cross-site Access-Control requests should be made using credentials such as cookies, 
-	// authorization headers or TLS client certificates. Setting withCredentials has no effect 
-	// on same-site requests.
-	
-    xhr.withCredentials = false; //true; // false gets rid of cors error in some cases
-
-	xhr.send(postParams);
-};
-
-function cancelRequest() { 
-	xhr.abort();
-	xhr = null;
-}
-
-*/
-
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
-/* ----------------------------------------------------------------------- */
+/**
+ * purple-console
+ * javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
+ * @version v1.2.0 - 2019-04-21
+ * @link https://github.com/ajsoriar/purple-console
+ * @author Andres J. Soria R. <ajsoriar@gmail.com>
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */
 
 
 (function () {
@@ -87,7 +17,7 @@ function cancelRequest() {
 
         var defaults = {
             opacity: false,
-            useColors: false, // When colors are used, div layers are generated on every log operation. I've noticed that when there are around 100 the UI gets slower and slower very fast, on every additional attachment of divs.
+            useColors: false, 
             autoRemoveOldDivs: null,
             printTime: false,
             bgColor: "#37006b",
@@ -96,13 +26,9 @@ function cancelRequest() {
             corner: null,
             maxObjLength: 5
         };
-
-        //var colorModeOn = false; //"NO_COLOR";
         var pixelLog = false;
         var pixelURL = null;
-        //var printTime = true;
         var el = null;
-        // var screenPositionX = null;
 	    var printFunction = null;
 
         console.log("[ajsrConsole]");
@@ -110,12 +36,11 @@ function cancelRequest() {
         function init(params) {
 
             console.log("[ajsrConsole] init!");
-            //var consoleID = "ajsrConsole-" + Date.now();
             var consoleType = params.mode,
                 consoleID = "ajsrConsole",
                 htmlString = '';
 
-            if (consoleType === "TEXTAREA") {} else if (consoleType === "CANVAS") {} else { //consoleType === "HTML"
+            if (consoleType === "TEXTAREA") {} else if (consoleType === "CANVAS") {} else { 
                 htmlString = '<div id="' + consoleID + '" style="position: absolute;' +
                     'bottom: 0;' +
                     'left: 0;' +
@@ -129,20 +54,16 @@ function cancelRequest() {
                     'z-index: 99999;' +
                     'overflow-x: hidden;' +
                     'overflow-y: auto;' +
-                    //'border: 1px solid #ef3ffd;"><div id="' + consoleID + '-screen">Waiting for logs...</div></div>';
                     'border: 1px solid #ef3ffd;">The purple console is waiting for logs...<br></div>';
             }
 
             createConsoleEl(htmlString);
-
-            // Set default printing strstegy
             setPrintStrategy(3);
         }
 
         var createConsoleEl = function (htmlString) {
             var ct = document.createElement('div');
             ct.setAttribute("id", "ajsrConsole-container");
-            //ct.setAttribute("style", "position: fixed; top: 0; left: 0;");
             ct.innerHTML = htmlString;
             document.body.appendChild(ct);
             el = ct.firstChild;
@@ -154,38 +75,11 @@ function cancelRequest() {
             return t + " ";
         };
 
-        // ----------------------------------------
-        //    Core logging functions start here   -
-        // ----------------------------------------
-
         var log = function (str, color,indentation) {
-
-            // include time
             var t = getTimeString();
             if (defaults.printTime === true) str = t + ": " + str;
 
             write(str, color);
-
-            // GO Pixel: Rest end point
-
-            /*
-
-            var pixelHost = "192.168.17.2";
-            var pixepPort = "9000";
-
-            // var URL = "http://192.168.17.2:9000/ajaxlog";
-            // ajsrRequest( "POST", URL, null );
-
-            // GO Pixel: Params example
-            var BASE_URL = "http://192.168.17.2:9000";
-            var params = '?timestamp=123'+
-                        '&'+ 'type=INFO'+
-                        '&'+ 'tag=STB'+
-                        '&'+ 'text=Hello World';
-
-            ajsrRequest( "GET", BASE_URL +"/imglog/log.jpg", params );
-
-            */
 
         };
 
@@ -204,28 +98,6 @@ function cancelRequest() {
         var success = function(str){
             attachHTML( '<span style="color:limegreen">' + str + '</span><br>' );
         };
-
-        // ----------------------------------
-        // - Printing strategies start here -
-        // ----------------------------------
-
-            // var previousPrintAtemptTiemstamp = 0;
-            // var printAtemptTimeBoundary = 500;
-            // var printAtemptBuffer = '';
-
-            // var delayedAttachHTML = function(str) { // This function is Key to stop freezing the UI! many innerHTML operations in a loop end up breaking the user experience.
-                
-            //     var currentPrintAtemptTiemstamp = Date.now();
-            //     if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
-            //         el.innerHTML = printAtemptBuffer + str;
-            //         printAtemptBuffer = '';
-            //         refreshScroll();
-            //     } else {
-            //         printAtemptBuffer += str;
-                    
-            //     }
-            //     previousPrintAtemptTiemstamp = currentPrintAtemptTiemstamp;
-            // };
 
             var setPrintStrategy = function(num){
                 switch ( num ) {
@@ -246,40 +118,19 @@ function cancelRequest() {
             };
 
             var attachHTML = function(str) {
-                // // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
-
-                // el.innerHTML += str;
-                // refreshScroll();
-                
-                //delayedAttachHTML(str); /// This approach is Key to stop freezing the UI! Many innerHTML operations in a loop end up breaking the user experience.
                 printFunction(str);
             };
 
-            // --------------
-            // A, Not delayed
-            // --------------
-
-            // 1. directAttachHTML
-
             var directAttachHTML = function(str){ 
-                // Slows the system when doing many innerHtml operations in a loop. 
-                // I experienced this problem in a very slow platform and that is why 
-                // we go to 2 (delayed printing and timestamp approach)
                 el.innerHTML = printAtemptBuffer + str;
             };
-
-            // -----------------------------------
-            // B, delayed printing strategies here
-            // -----------------------------------
 
             var previousPrintAtemptTiemstamp = 0;
             var printAtemptTimeBoundary = 500;
             var printAtemptBuffer = '';
             var timer = null;
 
-            // 2. delayedAttachHTML_byTimestamp;
-
-            var delayedAttachHTML_byTimestamp = function(str) { // On a fast platform sometimes Date.now() is not different from the previous timestamp.
+            var delayedAttachHTML_byTimestamp = function(str) { 
                 console.log(" - str:", str );
                 var currentPrintAtemptTiemstamp = Date.now();
                 if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
@@ -292,8 +143,6 @@ function cancelRequest() {
                     console.log("s a v e ...");
                 }
             };
-
-            // 3. printFunction = attachHTML_byTimeout;
 
             var attachHTML_byTimeout = function(str) {
                 window.clearTimeout(timer);
@@ -309,10 +158,6 @@ function cancelRequest() {
                 timer = null;
                 refreshScroll();
             };
-        
-        // --------------------------------
-        // - Printing strategies end here -
-        // --------------------------------
 	        
         var refreshScroll = function() {
             el.scrollTop = el.scrollHeight;
@@ -322,28 +167,18 @@ function cancelRequest() {
             attachHTML("<br>");
         };
 
-        // ----------------------------------------
-        //    Core logging functions end here     -
-        // ----------------------------------------
-
         var filterJSErrors = function() {
 
             window.onerror = function(message, url, lineNumber) {  
-                //save error and send to server for example.
     
                 message = "JS ERROR: In line "+ lineNumber +": "+ message;
     
                 try {
-                    //console.log(message);
                     this.log(message, "red");
     
                 } catch (error) {
                     
                 }
-    
-                // Returning true will prevent the firing of the default handler, 
-                // and returning false will let the default handler run.
-                // return true;
     
                 return false;
             };
@@ -352,7 +187,7 @@ function cancelRequest() {
 
         var printObj = function(o){
 
-            var MAX_LEN = defaults.maxObjLength; //100; //5; //defaults.maxObjLength;
+            var MAX_LEN = defaults.maxObjLength; 
 
             if (o !== Object(o)) {
                 write('Not an object!', "red");
@@ -364,7 +199,6 @@ function cancelRequest() {
             var lon = k.length;
 
             if  (lon > MAX_LEN) {
-                //write('<b>Sorry, this is a big object!</b>');
                 write('<b>Sorry, this object has more than '+ MAX_LEN +" properties. </b>Please use 'setMaxObjLength()' to print bigger objets","red");
                 return;
             }
@@ -376,21 +210,17 @@ function cancelRequest() {
             write(str);
         };
 
-        // -------
-        // init
-        // -------
-
         var defaultStart = function () {
             init({
                 mode: "HTML"
             });
         };
 
-        if (document.body != null) { // <script> alocated in <body>
+        if (document.body != null) { 
 
             defaultStart();
 
-        } else { // <script> allocated in <head> will wait for <body> creation to attach the UI
+        } else { 
 
             console.error("[ajsrConsole] document.body is null!");
             console.error("[ajsrConsole] purple-console code was imported in <HEAD>. Let's wait to document creation");
@@ -408,10 +238,6 @@ function cancelRequest() {
             }
 
         }
-        
-        // -------
-        // init
-        // -------
 
         return {
             el: null,
@@ -419,13 +245,7 @@ function cancelRequest() {
                 startTime: null,
                 laps: null
             },
-            // params:{
-            //     opacity: false
-            // },
             init: function (value) {
-                // canvas console
-                // html console
-                // textarea console
                 init({
                     mode: "HTML"
                 });
@@ -433,21 +253,8 @@ function cancelRequest() {
             log: log,
             cls: function () {
                 console.log("[ajsrConsole] cls!");
-                //var el = document.getElementById("ajsrConsole");
                 el.innerHTML = "";
             },
-            // set max lines,
-            // colorlines,
-            // autoscroll
-            // show timestamp: true
-            // autoblock
-            // autoblock time: 2000
-            // autoblockType: "SPACE" or line
-            // set transparent
-            // move
-            // show line numbers
-            // scrollUp num lines
-            // scrollDown
 
             disableAutoBlocks: function () {
 
@@ -470,7 +277,6 @@ function cancelRequest() {
                 this.setTextColor(defaults.textColor);
             },
             setLogAlias: function (str) {
-                //window[str] = window.ajsrConsole.log;
                 window[str] = window.ajsrConsole.log;
                 window[str].printObj = window.ajsrConsole.printObj;
                 window[str].br = window.ajsrConsole.br;
@@ -485,8 +291,8 @@ function cancelRequest() {
                 el.style.color = color;
             },
 
-            move: function (str) { // Changes the position of the console 
-                var c = el; //.style.color = color;
+            move: function (str) { 
+                var c = el; 
                 switch (str) {
                     case "UP":
                         c.style.top = "0";
@@ -507,7 +313,7 @@ function cancelRequest() {
                 }
             },
 
-            moveNext: function () { // Asignado a un boton
+            moveNext: function () { 
                 if (defaults.corner === null) defaults.corner = 4;
                 if (defaults.corner === 4) {
                     this.move("UP");
@@ -569,7 +375,7 @@ function cancelRequest() {
 
             },
 
-            startTime: function () { // ajsrConsole.startTime()
+            startTime: function () { 
                 this.data.startTime = Date.now();
                 this.log(getTimeString() + "Time stats now!");
                 this.data.laps = [{
@@ -620,60 +426,4 @@ function cancelRequest() {
     window.ajsrConsole = ajsrConsole();
     window.log = window.ajsrConsole.log;
 
-    // Ussage example:
-    // > ajsrConsole.log("Hello world!");
-
 }());
-
-/*
-ajsrConsole.filterJSErrors();
-//throw new Error("this is not an error");
-ajsrConsole.setLogAlias("debug");
-ajsrConsole.setBgColor("rgba(0,0,150,1)");
-ajsrConsole.setBorderColor("rgba(0,255,255,1)");
-ajsrConsole.setTextColor("rgba(255,255,255,1)");                                                                          
-ajsrConsole.toggleOpacity();
-ajsrConsole.printTime();
-debug("CONSOLE");
-ajsrConsole.printTime(false);
-ajsrConsole.move("UP");
-ajsrConsole.move("LEFT");
-ajsrConsole.move("RIGHT");
-ajsrConsole.autoHeight();
-ajsrConsole.useColors();
-debug("CONSOLE !!!");
-debug("CONSOLE color1", "yellow");
-ajsrConsole.printTime();
-ajsrConsole.useColors(false);
-debug("CONSOLE color2", "yellow");
-ajsrConsole.toggleOpacity();
-ajsrConsole.setSize(400,500);
-ajsrConsole.useColors();
-debug("Start!!", "green");
-ajsrConsole.error("ERROR");
-ajsrConsole.success("SUCCESS");
-//ajsrConsole.useColors(false);
-
-var myObj = {
-    "1": "a-11",
-    "2": "a-11",
-    "3": "a-11",
-    "4": "a-11",
-    "5": "a-11",
-    "6": "a-11"
-};
-
-//ajsrConsole.printObj(myObj);
-
-var myObj = {
-    "1": "a-11",
-    "2": "a-11",
-    "3": {
-        "b1": "b-11",
-        "b2": "b-11",
-        "b3": "b-11",
-    }
-};
-
-debug.printObj(myObj);
-*/

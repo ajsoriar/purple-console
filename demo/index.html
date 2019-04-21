@@ -14,6 +14,8 @@
     <b>purple-console.js demo</b>
     <script src="../src/purple-console.js"></script>
     <script>
+
+        /*
         var counter = 1000;
 
         function countDown() {
@@ -36,12 +38,65 @@
                     lap++;
                     ajsrConsole.setLap("LAP " + lap);
                     addLap();
-                }, 9000);
+                }, 2000);
             } else {
                 ajsrConsole.printLaps();
             }
         }
         addLap();
+        */
+
+        ajsrConsole.filterJSErrors();
+
+        //throw new Error("this is not an error");
+        ajsrConsole.setLogAlias("debug");
+        ajsrConsole.setBgColor("rgba(0,0,150,1)");
+        ajsrConsole.setBorderColor("rgba(0,255,255,1)");
+        ajsrConsole.setTextColor("rgba(255,255,255,1)");                                                                          
+        ajsrConsole.toggleOpacity();
+        ajsrConsole.printTime();
+        debug("CONSOLE");
+        ajsrConsole.printTime(false);
+        ajsrConsole.move("UP");
+        ajsrConsole.move("LEFT");
+        ajsrConsole.move("RIGHT");
+        ajsrConsole.autoHeight();
+        ajsrConsole.useColors();
+        debug("CONSOLE !!!");
+        debug("CONSOLE color1", "yellow");
+        ajsrConsole.printTime();
+        ajsrConsole.useColors(false);
+        debug("CONSOLE color2", "yellow");
+        ajsrConsole.toggleOpacity();
+        ajsrConsole.setSize(400,500);
+        ajsrConsole.useColors();
+        debug("Start!!", "green");
+        ajsrConsole.error("ERROR");
+        ajsrConsole.success("SUCCESS");
+        //ajsrConsole.useColors(false);
+
+        var myObj = {
+            "1": "a-11",
+            "2": "a-11",
+            "3": "a-11",
+            "4": "a-11",
+            "5": "a-11",
+            "6": "a-11"
+        };
+
+        ajsrConsole.printObj(myObj);
+
+        var myObj = {
+            "1": "a-11",
+            "2": "a-11",
+            "3": {
+                "b1": "b-11",
+                "b2": "b-11",
+                "b3": "b-11",
+            }
+        };
+
+        debug.printObj(myObj);
 
     </script>
 </body>
