@@ -3,6 +3,8 @@
 [![npm version](https://badge.fury.io/js/purple-console.svg)](https://badge.fury.io/js/purple-console)
 [![NuGet version](https://badge.fury.io/nu/purple-console.svg)](https://badge.fury.io/nu/purple-console)
 
+[![NPM](https://nodei.co/npm/purple-console.png?downloads=true&stars=true)](https://nodei.co/npm/purple-console/)
+
 Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes that don't allow debugging.
 
 ![purple-console initialization example](./demo/purple-console_example-1.gif?raw=true "purple-console initialization example")
@@ -18,6 +20,12 @@ Javascript component that prints logs in a DIV layer. It can be useful when deal
 - github: **<https://github.com/ajsoriar/purple-console>**
 
 ## 2 Include dependences
+
+```bash
+$ yarn add purple-console
+# or
+$ npm install purple-console
+```
 
 ### 2.1 In your HTML
 
@@ -126,7 +134,9 @@ ajsrConsole.setBgColor("rgba(0,0,150,1)");
 
 ![purple-console print js Object example](./demo/purple-console_print-object.gif?raw=true "purple-console print js Object example")
 
-### 3.4 Set start points and LAPs in order to do benchmarking and print the results in the console
+### 3.4 Set start points and LAPs
+
+Used to do benchmarking and print the results in the console.
 
 ```javascript
 ajsrConsole.setLap("LAP TEXT!");
