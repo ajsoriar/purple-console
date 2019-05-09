@@ -240,6 +240,7 @@ function cancelRequest() {
                     case 3:
                         printFunction = attachHTML_byTimeout;
                         success('Printing strategy was set to "delayed by timeout"');
+                        break;
                     default:
                         error();
                 }
