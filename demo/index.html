@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>purple-console.js demo</title>
-
+    <style>
+        body{
+            background-color: rgb(202, 202, 177);
+        }
+    </style>
 
 </head>
 
@@ -14,37 +18,6 @@
     <b>purple-console.js demo</b>
     <script src="../src/purple-console.js"></script>
     <script>
-
-        /*
-        var counter = 1000;
-
-        function countDown() {
-            if (counter > 0) {
-                setTimeout(function () {
-
-                    //console.log(counter);
-                    log("Hello world! counter: " + counter);
-                    counter--;
-                    countDown(counter);
-                }, 100);
-            }
-        }
-        countDown();
-
-        var lap = 0;
-        function addLap() {
-            if (counter > 0) {
-                setTimeout(function () {
-                    lap++;
-                    ajsrConsole.setLap("LAP " + lap);
-                    addLap();
-                }, 2000);
-            } else {
-                ajsrConsole.printLaps();
-            }
-        }
-        addLap();
-        */
 
         ajsrConsole.filterJSErrors();
 
@@ -97,6 +70,36 @@
         };
 
         debug.printObj(myObj);
+
+
+        var counter = 1000;
+/*
+        function countDown() {
+            if (counter > 0) {
+                setTimeout(function () {
+
+                    //console.log(counter);
+                    log("Hello world! counter: " + counter);
+                    counter--;
+                    countDown(counter);
+                }, 100);
+            }
+        }
+        countDown();
+*/
+        var lap = 0;
+        function addLap() {
+            if (counter > 0 && lap < 10) {
+                setTimeout(function () {
+                    lap++;
+                    ajsrConsole.setLap("LAP " + lap);
+                    addLap();
+                }, 2000);
+            } else {
+                ajsrConsole.printLaps();
+            }
+        }
+        addLap();
 
     </script>
 </body>
