@@ -94,7 +94,7 @@ function cancelRequest() {
             borderColor: "#ef3ffd",
             textColor: "white",
             corner: null,
-            maxObjLength: 5
+            maxObjLength: 5    
         };
 
         //var colorModeOn = false; //"NO_COLOR";

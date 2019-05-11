@@ -1,6 +1,6 @@
 {
   "name": "purple-console",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
   "main": "dist/purple-consoli.min.js",
   "repository": "https://github.com/ajsoriar/purple-console.git",

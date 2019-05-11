@@ -1,7 +1,7 @@
 /**
  * purple-console
  * javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
- * @version v1.2.1 - 2019-05-09
+ * @version v1.2.2 - 2019-05-12
  * @link https://github.com/ajsoriar/purple-console
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -24,7 +24,7 @@
             borderColor: "#ef3ffd",
             textColor: "white",
             corner: null,
-            maxObjLength: 5
+            maxObjLength: 5    
         };
         var pixelLog = false;
         var pixelURL = null;
@@ -209,6 +209,13 @@
             }
             str += '</div>';
             write(str);
+        };
+
+        var hide = function(){
+            document.getElementById("ajsrConsole-container").setAttribute("style", "display: none");
+        };
+        var show = function(){
+            document.getElementById("ajsrConsole-container").setAttribute("style", "display: block");
         };
 
         var defaultStart = function () {
@@ -420,7 +427,9 @@
                 success("maxObjLength was set to "+ num +"!" );
             },
             br: br,
-            setPrintStrategy: setPrintStrategy
+            setPrintStrategy: setPrintStrategy,
+            hide: hide,
+            show: show
         };
     };
 
