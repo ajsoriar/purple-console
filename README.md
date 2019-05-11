@@ -173,6 +173,8 @@ ajsrConsole.setLap("LAP TEXT!");
 | `setMaxObjLength`      | 5 | Increases the allowed print length.          |
 | `br`                   | - | Prints a blank line.           |
 | `setPrintStrategy`     | timeout | -           |
+| `hide`     | - | Hides the console           |
+| `show`     | - | Shows the console          |
 
 ## 5 Development
 

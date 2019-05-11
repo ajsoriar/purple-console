@@ -377,6 +377,13 @@ function cancelRequest() {
             write(str);
         };
 
+        var hide = function(){
+            document.getElementById("ajsrConsole-container").setAttribute("style", "display: none");
+        };
+        var show = function(){
+            document.getElementById("ajsrConsole-container").setAttribute("style", "display: block");
+        };
+
         // -------
         // init
         // -------
@@ -614,7 +621,9 @@ function cancelRequest() {
                 success("maxObjLength was set to "+ num +"!" );
             },
             br: br,
-            setPrintStrategy: setPrintStrategy
+            setPrintStrategy: setPrintStrategy,
+            hide: hide,
+            show: show
         };
     };
 
