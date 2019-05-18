@@ -1,7 +1,7 @@
 /**
  * purple-console
  * javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
- * @version v1.2.2 - 2019-05-12
+ * @version 1.2.3 - 2019-05-18
  * @link https://github.com/ajsoriar/purple-console
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -24,7 +24,8 @@
             borderColor: "#ef3ffd",
             textColor: "white",
             corner: null,
-            maxObjLength: 5    
+            maxObjLength: 5,
+            fontSize: 11
         };
         var pixelLog = false;
         var pixelURL = null;
@@ -186,7 +187,9 @@
 
         };
 
-        var printObj = function(o){
+        var printObj = function(o, borderColor, backgroundColor){
+            if ( !borderColor ) borderColor = "gray";
+            if ( !backgroundColor ) backgroundColor = "transparent";
 
             var MAX_LEN = defaults.maxObjLength; 
 
@@ -203,7 +206,7 @@
                 write('<b>Sorry, this object has more than '+ MAX_LEN +" properties. </b>Please use 'setMaxObjLength()' to print bigger objets","red");
                 return;
             }
-            str = '<div style="padding:2px 5px;border:1px solid gray">';
+            str = '<div style="padding:2px 5px;border:1px solid '+ borderColor +'; background-color: '+ backgroundColor +'">';
             for ( var i=0; i<lon; i++ ) {
                 str += JSON.stringify(k[i]) +': <span style="color:yellow">'+ JSON.stringify(o[k[i]]) +"</span><br>";   
             }
@@ -338,10 +341,12 @@
 
             autoHeight: function () {
                 var c = el;
-                if (c.style.height == "66%") {
+                if (c.style.height == "100%") {
                     c.style.height = "33%";
-                } else {
+                } else if (c.style.height == "33%") {
                     c.style.height = "66%";
+                } else {
+                    c.style.height = "100%";
                 }
                 console.log("c.style.height:", c.style.height);
                 refreshScroll();
@@ -429,7 +434,29 @@
             br: br,
             setPrintStrategy: setPrintStrategy,
             hide: hide,
-            show: show
+            show: show,
+            fontSize: function(num){
+                if (!num) num = defaults.fontSize;
+                el.style.fontSize = num +'px';
+            },
+            preset: function(){
+                this.setLogAlias("debug");
+                this.setBgColor("rgba(0,0,150,1)");
+                this.setBorderColor("rgba(0,255,255,1)");
+                this.setTextColor("rgba(255,255,255,1)");
+                this.move("UP");
+                this.move("RIGHT");
+                this.useColors();
+                this.printTime();
+                this.filterJSErrors();
+                this.setMaxObjLength(100); 
+                this.fontSize(11); 
+                this.setSize(700,100); 
+                this.autoHeight();
+                this.autoHeight();
+                this.autoHeight();
+                this.autoHeight();
+            }
         };
     };
 
