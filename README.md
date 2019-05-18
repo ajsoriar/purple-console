@@ -150,7 +150,7 @@ ajsrConsole.setLap("LAP TEXT!");
 | `log`                  | - | Main functionality here.           |
 | `cls`                  | - | Clear the console.           |
 | `resetColors`          | - | Go back to default colors.           |
-| `setLogAlias`          | - | Use *whatever* instead of `ajsrConsole`         |
+| `setLogAlias`          | - | Use *whatever* instead of `ajsrConsole`.         |
 | `setBgColor`           | - | Color of the background.           |
 | `setBorderColor`       | - | Color of the border.           |
 | `setTextColor`         | - | -           |
@@ -158,23 +158,26 @@ ajsrConsole.setLap("LAP TEXT!");
 | `moveNext`             | - | -           |
 | `autoHeight`           | - | Will toggle height from 33% and 66% of the available space.           |
 | `setSize`              | number | -           |      |
-| `toggleOpacity`        | - | Toggles opacity between 100% to 50%         |
-| `useColors`            | false | Allows the use of colors when doing `log`.           |
+| `toggleOpacity`        | - | Toggles opacity between 100% to 50%.         |
+| `useColors`            | false | Allows the use of colors when doing `log`           |
 | `printTime`            | false | -           |
 | `setParams`            | - | -           |
 | `startTime`            | - | -           |
 | `setLap`               | - | -           |
 | `printLaps`            | - | -           |
 | `filterJSErrors`       | false | -           |
-| `printObjprintObj`     | - | Prints a json object in a box.           |
+| `printObj`     | - | Prints a json object in a box. 1st param is a json. 2nd and 3rd (optional) are border and background colors. |
 | `write`                | - | -           |
 | `error`                | - | -           |
 | `success`               | - | -           |
 | `setMaxObjLength`      | 5 | Increases the allowed print length.          |
 | `br`                   | - | Prints a blank line.           |
 | `setPrintStrategy`     | timeout | -           |
-| `hide`     | - | Hides the console           |
-| `show`     | - | Shows the console          |
+| `hide`     | - | Hides the console.           |
+| `show`     | - | Shows the console.          |
+| `fontSize`     | 11 | Sets the font size.          |
+| `preset`     | - | Sets a group of configuration options useful in my day by day work.        |
+
 
 ## 5 Development
 
