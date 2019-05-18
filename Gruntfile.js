@@ -1,6 +1,20 @@
 'use strict';
 
 module.exports = function(grunt) {
+
+    var getDate = ( timestamp ) => {
+        var dt = null, str;
+        if (!timestamp) timestamp = Date.now();
+        dt = new Date(timestamp);
+        str = dt.getFullYear() + "-";
+        if (dt.getMonth() < 9) str += "0";
+        str += (dt.getMonth() + 1);
+        str += "-";
+        if(dt.getDate() < 10) str += "0";
+        str += dt.getDate();
+        return str;
+    };
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: {
@@ -17,8 +31,7 @@ module.exports = function(grunt) {
                     ],
                     dest: 'dist',
                     expand: true
-                }
-                ]
+                }]
             }
         },
         uglify: {
@@ -49,14 +62,31 @@ module.exports = function(grunt) {
             }
         },
         concat: {
-            options: {
-              //separator: ';',
-            },
             dist: {
               src: ['src/header.txt', 'dist/purple-console.js'],
               dest: 'dist/purple-console.js',
             },
-          },
+        },
+        replace: {
+            header: {
+                options: {
+                    patterns: [
+                        {
+                            json: {
+                                "version-number": '<%= pkg.version %>',
+                                "version-date": getDate( Date.now() ),
+                            }
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        src: ['dist/purple-console.js'],
+                        dest: 'dist/purple-console.js'
+                    }
+                ]
+            }
+        },
 
     });
 
@@ -65,11 +95,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-remove-comments');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-replace');
 
     grunt.registerTask( 
         'build',
         'Compiles all of the assets and files to dist directory.',
-        ['clean', 'copy', 'remove_comments:js', 'concat', 'uglify' ]
+        ['clean', 'copy', 'remove_comments:js', 'concat', 'replace:header', 'uglify' ]
     );
 
 };
