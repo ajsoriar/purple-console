@@ -1,7 +1,7 @@
 /**
  * purple-console
  * javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
- * @version 1.2.3 - 2019-05-18
+ * @version 1.2.4 - 2019-05-20
  * @link https://github.com/ajsoriar/purple-console
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -16,21 +16,23 @@
         'use strict';
 
         var defaults = {
-            opacity: false,
-            useColors: false, 
-            autoRemoveOldDivs: null,
-            printTime: false,
-            bgColor: "#37006b",
-            borderColor: "#ef3ffd",
-            textColor: "white",
-            corner: null,
-            maxObjLength: 5,
-            fontSize: 11
-        };
-        var pixelLog = false;
-        var pixelURL = null;
-        var el = null;
-	    var printFunction = null;
+                opacity: false,
+                useColors: false,
+                autoRemoveOldDivs: null,
+                printTime: false,
+                bgColor: "#37006b",
+                borderColor: "#ef3ffd",
+                textColor: "white",
+                corner: null,
+                maxObjLength: 5,
+                fontSize: 11
+            },
+            el = null,
+            printFunction = null,
+            previousPrintAtemptTiemstamp = 0,
+            printAtemptTimeBoundary = 500,
+            printAtemptBuffer = '',
+            timer = null;
 
         console.log("[ajsrConsole]");
 
@@ -76,7 +78,7 @@
             return t + " ";
         };
 
-        var log = function (str, color,indentation) {
+        var log = function (str, color, indentation) {
             var t = getTimeString();
             if (defaults.printTime === true) str = t + ": " + str;
 
@@ -84,112 +86,109 @@
 
         };
 
-        var write = function(str, color) {
+        var write = function (str, color) {
             if (defaults.useColors == true && color != null) {
-                attachHTML( '<span style="color:' + color + '">' + str + '</span><br>' );
+                attachHTML('<span style="color:' + color + '">' + str + '</span><br>');
             } else {
-                attachHTML( str + "<br>" );
+                attachHTML(str + "<br>");
             }
         };
 
-        var error = function(str){
-            attachHTML( '<span style="color:red">' + str + '</span><br>' );
+        var error = function (str) {
+            if (!str) str = 'KO';
+            attachHTML('<span style="color:red">' + str + '</span><br>');
         };
 
-        var success = function(str){
-            attachHTML( '<span style="color:limegreen">' + str + '</span><br>' );
+        var success = function (str) {
+            if (!str) str = 'OK';
+            attachHTML('<span style="color:limegreen">' + str + '</span><br>');
         };
 
-            var setPrintStrategy = function(num){
-                switch ( num ) {
-                    case 1:
-                        printFunction = directAttachHTML;
-                        success('Printing strategy was set to "direct"');
-                        break;
-                    case 2:
-                        printFunction = delayedAttachHTML_byTimestamp;
-                        success('Printing strategy was set to "delayed by timestamp"');
-                        break;
-                    case 3:
-                        printFunction = attachHTML_byTimeout;
-                        success('Printing strategy was set to "delayed by timeout"');
-                        break;
-                    default:
-                        error();
-                }
-            };
+        var setPrintStrategy = function (num) {
+            switch (num) {
+                case 1:
+                    printFunction = directAttachHTML;
+                    success('Printing strategy was set to "direct"');
+                    break;
+                case 2:
+                    printFunction = delayedAttachHTML_byTimestamp;
+                    success('Printing strategy was set to "delayed by timestamp"');
+                    break;
+                case 3:
+                    printFunction = attachHTML_byTimeout;
+                    success('Printing strategy was set to "delayed by timeout"');
+                    break;
+                default:
+                    error();
+            }
+        };
 
-            var attachHTML = function(str) {
-                printFunction(str);
-            };
+        var attachHTML = function (str) {
+            printFunction(str);
+        };
 
-            var directAttachHTML = function(str){ 
+        var directAttachHTML = function (str) {
+            el.innerHTML = printAtemptBuffer + str;
+        };
+
+        var delayedAttachHTML_byTimestamp = function (str) { 
+            console.log(" - str:", str);
+            var currentPrintAtemptTiemstamp = Date.now();
+            if (currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary) {
                 el.innerHTML = printAtemptBuffer + str;
-            };
-
-            var previousPrintAtemptTiemstamp = 0;
-            var printAtemptTimeBoundary = 500;
-            var printAtemptBuffer = '';
-            var timer = null;
-
-            var delayedAttachHTML_byTimestamp = function(str) { 
-                console.log(" - str:", str );
-                var currentPrintAtemptTiemstamp = Date.now();
-                if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
-                    el.innerHTML = printAtemptBuffer + str;
-                    printAtemptBuffer = '';
-                    console.log("... p r i n t !");
-                    refreshScroll();
-                } else {
-                    printAtemptBuffer += str;  
-                    console.log("s a v e ...");
-                }
-            };
-
-            var attachHTML_byTimeout = function(str) {
-                window.clearTimeout(timer);
-                printAtemptBuffer += str;
-                timer = window.setTimeout( function(){
-                    delayedAttachHTML_byTimeout( str );
-                }, printAtemptTimeBoundary); 
-            };
-
-            var delayedAttachHTML_byTimeout = function(str) { 
-                el.innerHTML += printAtemptBuffer;
                 printAtemptBuffer = '';
-                timer = null;
+                console.log("... p r i n t !");
                 refreshScroll();
-            };
-	        
-        var refreshScroll = function() {
+            } else {
+                printAtemptBuffer += str;
+                console.log("s a v e ...");
+            }
+        };
+
+        var attachHTML_byTimeout = function (str) {
+            window.clearTimeout(timer);
+            printAtemptBuffer += str;
+            timer = window.setTimeout(function () {
+                delayedAttachHTML_byTimeout(str);
+            }, printAtemptTimeBoundary);
+        };
+
+        var delayedAttachHTML_byTimeout = function (str) {
+            el.innerHTML += printAtemptBuffer;
+            printAtemptBuffer = '';
+            timer = null;
+            refreshScroll();
+        };
+
+        var refreshScroll = function () {
             el.scrollTop = el.scrollHeight;
         };
 
-        var br = function(){
+        var br = function () {
             attachHTML("<br>");
         };
 
-        var filterJSErrors = function() {
+        var filterJSErrors = function () {
 
-            window.onerror = function(message, url, lineNumber) {  
-    
-                message = "JS ERROR: In line "+ lineNumber +": "+ message;
-    
+            window.onerror = function (message, url, lineNumber) {
+
+                message = "JS ERROR: In line " + lineNumber + ": " + message;
+
                 try {
                     this.log(message, "red");
-    
+
                 } catch (error) {
-                    
+
                 }
-    
+
                 return false;
             };
 
         };
 
-        var printObj = function(o, borderColor, backgroundColor){
-            if ( !borderColor ) borderColor = "gray";
-            if ( !backgroundColor ) backgroundColor = "transparent";
+        var printObj = function (o, borderColor, backgroundColor) {
+            if (!borderColor) borderColor = "gray";
+            if (!backgroundColor) backgroundColor = "transparent";
 
             var MAX_LEN = defaults.maxObjLength; 
 
@@ -197,27 +196,30 @@
                 write('Not an object!', "red");
                 return;
             }
-            var k=[],p,str;
-            for (p in o) { if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p); }
+            var k = [],
+                p, str;
+            for (p in o) {
+                if (Object.prototype.hasOwnProperty.call(o, p)) k.push(p);
+            }
 
             var lon = k.length;
 
-            if  (lon > MAX_LEN) {
-                write('<b>Sorry, this object has more than '+ MAX_LEN +" properties. </b>Please use 'setMaxObjLength()' to print bigger objets","red");
+            if (lon > MAX_LEN) {
+                write('<b>Sorry, this object has more than ' + MAX_LEN + " properties. </b>Please use 'setMaxObjLength()' to print bigger objets", "red");
                 return;
             }
-            str = '<div style="padding:2px 5px;border:1px solid '+ borderColor +'; background-color: '+ backgroundColor +'">';
-            for ( var i=0; i<lon; i++ ) {
-                str += JSON.stringify(k[i]) +': <span style="color:yellow">'+ JSON.stringify(o[k[i]]) +"</span><br>";   
+            str = '<div style="padding:2px 5px;border:1px solid ' + borderColor + '; background-color: ' + backgroundColor + '">';
+            for (var i = 0; i < lon; i++) {
+                str += JSON.stringify(k[i]) + ': <span style="color:yellow">' + JSON.stringify(o[k[i]]) + "</span><br>";
             }
             str += '</div>';
             write(str);
         };
 
-        var hide = function(){
+        var hide = function () {
             document.getElementById("ajsrConsole-container").setAttribute("style", "display: none");
         };
-        var show = function(){
+        var show = function () {
             document.getElementById("ajsrConsole-container").setAttribute("style", "display: block");
         };
 
@@ -291,6 +293,9 @@
                 window[str] = window.ajsrConsole.log;
                 window[str].printObj = window.ajsrConsole.printObj;
                 window[str].br = window.ajsrConsole.br;
+            },
+            setConsoleAlias: function (str) {
+                window[str] = window.ajsrConsole
             },
             setBgColor: function (color) {
                 el.style.backgroundColor = color;
@@ -424,23 +429,25 @@
 
             filterJSErrors: filterJSErrors,
             printObj: printObj,
+            obj: printObj,
             write: write,
-            error:error,
+            error: error,
             success: success,
-            setMaxObjLength: function(num) {
+            setMaxObjLength: function (num) {
                 defaults.maxObjLength = num;
-                success("maxObjLength was set to "+ num +"!" );
+                success("maxObjLength was set to " + num + "!");
             },
             br: br,
             setPrintStrategy: setPrintStrategy,
             hide: hide,
             show: show,
-            fontSize: function(num){
+            fontSize: function (num) {
                 if (!num) num = defaults.fontSize;
-                el.style.fontSize = num +'px';
+                el.style.fontSize = num + 'px';
             },
-            preset: function(){
+            preset: function () {
                 this.setLogAlias("debug");
+                this.setConsoleAlias("Cnsl");
                 this.setBgColor("rgba(0,0,150,1)");
                 this.setBorderColor("rgba(0,255,255,1)");
                 this.setTextColor("rgba(255,255,255,1)");
@@ -448,10 +455,8 @@
                 this.move("RIGHT");
                 this.useColors();
                 this.printTime();
-                this.filterJSErrors();
-                this.setMaxObjLength(100); 
-                this.fontSize(11); 
-                this.setSize(700,100); 
+                this.setMaxObjLength(100);
+                this.fontSize(11);
                 this.autoHeight();
                 this.autoHeight();
                 this.autoHeight();
@@ -461,6 +466,5 @@
     };
 
     window.ajsrConsole = ajsrConsole();
-    window.log = window.ajsrConsole.log;
 
 }());
