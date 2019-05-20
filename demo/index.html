@@ -16,8 +16,14 @@
 
 <body>
     <b>purple-console.js demo</b>
+    <br>
+    <button onclick="applyPreset()">ajsrConsole.preset()</button>
     <script src="../src/purple-console.js"></script>
     <script>
+
+        var applyPreset = function() {
+            ajsrConsole.preset();
+        };
 
         ajsrConsole.filterJSErrors();
 

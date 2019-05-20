@@ -13,7 +13,7 @@ Javascript component that prints logs in a DIV layer. It can be useful when deal
 
 ## 1 Quick start
 
-### 1.1 Download and Install purple-console:
+### 1.1 Download and Install purple-console
 
 - Yarn: **yarn add purple-console**
 - NPM: **npm install purple-console**

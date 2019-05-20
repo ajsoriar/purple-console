@@ -199,10 +199,12 @@ function cancelRequest() {
         };
 
         var error = function(str){
+            if (!str) str = 'KO';
             attachHTML( '<span style="color:red">' + str + '</span><br>' );
         };
 
         var success = function(str){
+            if (!str) str = 'OK';
             attachHTML( '<span style="color:limegreen">' + str + '</span><br>' );
         };
 
@@ -481,10 +483,12 @@ function cancelRequest() {
                 this.setTextColor(defaults.textColor);
             },
             setLogAlias: function (str) {
-                //window[str] = window.ajsrConsole.log;
                 window[str] = window.ajsrConsole.log;
                 window[str].printObj = window.ajsrConsole.printObj;
                 window[str].br = window.ajsrConsole.br;
+            },
+            setConsoleAlias: function (str) {
+                window[str] = window.ajsrConsole
             },
             setBgColor: function (color) {
                 el.style.backgroundColor = color;
@@ -618,6 +622,7 @@ function cancelRequest() {
 
             filterJSErrors: filterJSErrors,
             printObj: printObj,
+            obj: printObj,
             write: write,
             error:error,
             success: success,
@@ -635,6 +640,7 @@ function cancelRequest() {
             },
             preset: function(){
                 this.setLogAlias("debug");
+                this.setConsoleAlias("Cnsl");
                 this.setBgColor("rgba(0,0,150,1)");
                 this.setBorderColor("rgba(0,255,255,1)");
                 this.setTextColor("rgba(255,255,255,1)");
@@ -642,10 +648,10 @@ function cancelRequest() {
                 this.move("RIGHT");
                 this.useColors();
                 this.printTime();
-                this.filterJSErrors();
+                //this.filterJSErrors();
                 this.setMaxObjLength(100); 
                 this.fontSize(11); 
-                this.setSize(700,100); 
+                //this.setSize(700,100); 
                 this.autoHeight();
                 this.autoHeight();
                 this.autoHeight();
@@ -655,7 +661,7 @@ function cancelRequest() {
     };
 
     window.ajsrConsole = ajsrConsole();
-    window.log = window.ajsrConsole.log;
+    //window.log = window.ajsrConsole.log;
 
     // Ussage example:
     // > ajsrConsole.log("Hello world!");
