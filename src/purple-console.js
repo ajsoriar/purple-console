@@ -86,25 +86,25 @@ function cancelRequest() {
         'use strict';
 
         var defaults = {
-            opacity: false,
-            useColors: false, // When colors are used, div layers are generated on every log operation. I've noticed that when there are around 100 the UI gets slower and slower very fast, on every additional attachment of divs.
-            autoRemoveOldDivs: null,
-            printTime: false,
-            bgColor: "#37006b",
-            borderColor: "#ef3ffd",
-            textColor: "white",
-            corner: null,
-            maxObjLength: 5,
-            fontSize: 11
-        };
-
-        //var colorModeOn = false; //"NO_COLOR";
-        var pixelLog = false;
-        var pixelURL = null;
-        //var printTime = true;
-        var el = null;
-        // var screenPositionX = null;
-	    var printFunction = null;
+                opacity: false,
+                useColors: false,
+                autoRemoveOldDivs: null,
+                printTime: false,
+                bgColor: "#37006b",
+                borderColor: "#ef3ffd",
+                textColor: "white",
+                corner: null,
+                maxObjLength: 5,
+                fontSize: 11
+            },
+            //pixelLog = false,
+            //pixelURL = null,
+            el = null,
+            printFunction = null,
+            previousPrintAtemptTiemstamp = 0,
+            printAtemptTimeBoundary = 500,
+            printAtemptBuffer = '',
+            timer = null;
 
         console.log("[ajsrConsole]");
 
@@ -159,7 +159,7 @@ function cancelRequest() {
         //    Core logging functions start here   -
         // ----------------------------------------
 
-        var log = function (str, color,indentation) {
+        var log = function (str, color, indentation) {
 
             // include time
             var t = getTimeString();
@@ -190,139 +190,134 @@ function cancelRequest() {
 
         };
 
-        var write = function(str, color) {
+        var write = function (str, color) {
             if (defaults.useColors == true && color != null) {
-                attachHTML( '<span style="color:' + color + '">' + str + '</span><br>' );
+                attachHTML('<span style="color:' + color + '">' + str + '</span><br>');
             } else {
-                attachHTML( str + "<br>" );
+                attachHTML(str + "<br>");
             }
         };
 
-        var error = function(str){
+        var error = function (str) {
             if (!str) str = 'KO';
-            attachHTML( '<span style="color:red">' + str + '</span><br>' );
+            attachHTML('<span style="color:red">' + str + '</span><br>');
         };
 
-        var success = function(str){
+        var success = function (str) {
             if (!str) str = 'OK';
-            attachHTML( '<span style="color:limegreen">' + str + '</span><br>' );
+            attachHTML('<span style="color:limegreen">' + str + '</span><br>');
         };
 
         // ----------------------------------
         // - Printing strategies start here -
         // ----------------------------------
 
-            // var previousPrintAtemptTiemstamp = 0;
-            // var printAtemptTimeBoundary = 500;
-            // var printAtemptBuffer = '';
+        // var previousPrintAtemptTiemstamp = 0;
+        // var printAtemptTimeBoundary = 500;
+        // var printAtemptBuffer = '';
 
-            // var delayedAttachHTML = function(str) { // This function is Key to stop freezing the UI! many innerHTML operations in a loop end up breaking the user experience.
-                
-            //     var currentPrintAtemptTiemstamp = Date.now();
-            //     if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
-            //         el.innerHTML = printAtemptBuffer + str;
-            //         printAtemptBuffer = '';
-            //         refreshScroll();
-            //     } else {
-            //         printAtemptBuffer += str;
-                    
-            //     }
-            //     previousPrintAtemptTiemstamp = currentPrintAtemptTiemstamp;
-            // };
+        // var delayedAttachHTML = function(str) { // This function is Key to stop freezing the UI! many innerHTML operations in a loop end up breaking the user experience.
 
-            var setPrintStrategy = function(num){
-                switch ( num ) {
-                    case 1:
-                        printFunction = directAttachHTML;
-                        success('Printing strategy was set to "direct"');
-                        break;
-                    case 2:
-                        printFunction = delayedAttachHTML_byTimestamp;
-                        success('Printing strategy was set to "delayed by timestamp"');
-                        break;
-                    case 3:
-                        printFunction = attachHTML_byTimeout;
-                        success('Printing strategy was set to "delayed by timeout"');
-                        break;
-                    default:
-                        error();
-                }
-            };
+        //     var currentPrintAtemptTiemstamp = Date.now();
+        //     if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
+        //         el.innerHTML = printAtemptBuffer + str;
+        //         printAtemptBuffer = '';
+        //         refreshScroll();
+        //     } else {
+        //         printAtemptBuffer += str;
 
-            var attachHTML = function(str) {
-                // // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
+        //     }
+        //     previousPrintAtemptTiemstamp = currentPrintAtemptTiemstamp;
+        // };
 
-                // el.innerHTML += str;
-                // refreshScroll();
-                
-                //delayedAttachHTML(str); /// This approach is Key to stop freezing the UI! Many innerHTML operations in a loop end up breaking the user experience.
-                printFunction(str);
-            };
+        var setPrintStrategy = function (num) {
+            switch (num) {
+                case 1:
+                    printFunction = directAttachHTML;
+                    success('Printing strategy was set to "direct"');
+                    break;
+                case 2:
+                    printFunction = delayedAttachHTML_byTimestamp;
+                    success('Printing strategy was set to "delayed by timestamp"');
+                    break;
+                case 3:
+                    printFunction = attachHTML_byTimeout;
+                    success('Printing strategy was set to "delayed by timeout"');
+                    break;
+                default:
+                    error();
+            }
+        };
 
-            // --------------
-            // A, Not delayed
-            // --------------
+        var attachHTML = function (str) {
+            // // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
 
-            // 1. directAttachHTML
+            // el.innerHTML += str;
+            // refreshScroll();
 
-            var directAttachHTML = function(str){ 
-                // Slows the system when doing many innerHtml operations in a loop. 
-                // I experienced this problem in a very slow platform and that is why 
-                // we go to 2 (delayed printing and timestamp approach)
+            //delayedAttachHTML(str); /// This approach is Key to stop freezing the UI! Many innerHTML operations in a loop end up breaking the user experience.
+            printFunction(str);
+        };
+
+        // --------------
+        // A, Not delayed
+        // --------------
+
+        // 1. directAttachHTML
+
+        var directAttachHTML = function (str) {
+            // Slows the system when doing many innerHtml operations in a loop. 
+            // I experienced this problem in a very slow platform and that is why 
+            // we go to 2 (delayed printing and timestamp approach)
+            el.innerHTML = printAtemptBuffer + str;
+        };
+
+        // -----------------------------------
+        // B, delayed printing strategies here
+        // -----------------------------------
+
+        // 2. delayedAttachHTML_byTimestamp;
+
+        var delayedAttachHTML_byTimestamp = function (str) { // On a fast platform sometimes Date.now() is not different from the previous timestamp.
+            console.log(" - str:", str);
+            var currentPrintAtemptTiemstamp = Date.now();
+            if (currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary) {
                 el.innerHTML = printAtemptBuffer + str;
-            };
-
-            // -----------------------------------
-            // B, delayed printing strategies here
-            // -----------------------------------
-
-            var previousPrintAtemptTiemstamp = 0;
-            var printAtemptTimeBoundary = 500;
-            var printAtemptBuffer = '';
-            var timer = null;
-
-            // 2. delayedAttachHTML_byTimestamp;
-
-            var delayedAttachHTML_byTimestamp = function(str) { // On a fast platform sometimes Date.now() is not different from the previous timestamp.
-                console.log(" - str:", str );
-                var currentPrintAtemptTiemstamp = Date.now();
-                if ( currentPrintAtemptTiemstamp > previousPrintAtemptTiemstamp + printAtemptTimeBoundary ){
-                    el.innerHTML = printAtemptBuffer + str;
-                    printAtemptBuffer = '';
-                    console.log("... p r i n t !");
-                    refreshScroll();
-                } else {
-                    printAtemptBuffer += str;  
-                    console.log("s a v e ...");
-                }
-            };
-
-            // 3. printFunction = attachHTML_byTimeout;
-
-            var attachHTML_byTimeout = function(str) {
-                window.clearTimeout(timer);
-                printAtemptBuffer += str;
-                timer = window.setTimeout( function(){
-                    delayedAttachHTML_byTimeout( str );
-                }, printAtemptTimeBoundary); 
-            };
-
-            var delayedAttachHTML_byTimeout = function(str) { 
-                el.innerHTML += printAtemptBuffer;
                 printAtemptBuffer = '';
-                timer = null;
+                console.log("... p r i n t !");
                 refreshScroll();
-            };
-        
+            } else {
+                printAtemptBuffer += str;
+                console.log("s a v e ...");
+            }
+        };
+
+        // 3. printFunction = attachHTML_byTimeout;
+
+        var attachHTML_byTimeout = function (str) {
+            window.clearTimeout(timer);
+            printAtemptBuffer += str;
+            timer = window.setTimeout(function () {
+                delayedAttachHTML_byTimeout(str);
+            }, printAtemptTimeBoundary);
+        };
+
+        var delayedAttachHTML_byTimeout = function (str) {
+            el.innerHTML += printAtemptBuffer;
+            printAtemptBuffer = '';
+            timer = null;
+            refreshScroll();
+        };
+
         // --------------------------------
         // - Printing strategies end here -
         // --------------------------------
-	        
-        var refreshScroll = function() {
+
+        var refreshScroll = function () {
             el.scrollTop = el.scrollHeight;
         };
 
-        var br = function(){
+        var br = function () {
             attachHTML("<br>");
         };
 
@@ -330,33 +325,33 @@ function cancelRequest() {
         //    Core logging functions end here     -
         // ----------------------------------------
 
-        var filterJSErrors = function() {
+        var filterJSErrors = function () {
 
-            window.onerror = function(message, url, lineNumber) {  
+            window.onerror = function (message, url, lineNumber) {
                 //save error and send to server for example.
-    
-                message = "JS ERROR: In line "+ lineNumber +": "+ message;
-    
+
+                message = "JS ERROR: In line " + lineNumber + ": " + message;
+
                 try {
                     //console.log(message);
                     this.log(message, "red");
-    
+
                 } catch (error) {
-                    
+
                 }
-    
+
                 // Returning true will prevent the firing of the default handler, 
                 // and returning false will let the default handler run.
                 // return true;
-    
+
                 return false;
             };
 
         };
 
-        var printObj = function(o, borderColor, backgroundColor){
-            if ( !borderColor ) borderColor = "gray";
-            if ( !backgroundColor ) backgroundColor = "transparent";
+        var printObj = function (o, borderColor, backgroundColor) {
+            if (!borderColor) borderColor = "gray";
+            if (!backgroundColor) backgroundColor = "transparent";
 
             var MAX_LEN = defaults.maxObjLength; //100; //5; //defaults.maxObjLength;
 
@@ -364,28 +359,31 @@ function cancelRequest() {
                 write('Not an object!', "red");
                 return;
             }
-            var k=[],p,str;
-            for (p in o) { if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p); }
+            var k = [],
+                p, str;
+            for (p in o) {
+                if (Object.prototype.hasOwnProperty.call(o, p)) k.push(p);
+            }
 
             var lon = k.length;
 
-            if  (lon > MAX_LEN) {
+            if (lon > MAX_LEN) {
                 //write('<b>Sorry, this is a big object!</b>');
-                write('<b>Sorry, this object has more than '+ MAX_LEN +" properties. </b>Please use 'setMaxObjLength()' to print bigger objets","red");
+                write('<b>Sorry, this object has more than ' + MAX_LEN + " properties. </b>Please use 'setMaxObjLength()' to print bigger objets", "red");
                 return;
             }
-            str = '<div style="padding:2px 5px;border:1px solid '+ borderColor +'; background-color: '+ backgroundColor +'">';
-            for ( var i=0; i<lon; i++ ) {
-                str += JSON.stringify(k[i]) +': <span style="color:yellow">'+ JSON.stringify(o[k[i]]) +"</span><br>";   
+            str = '<div style="padding:2px 5px;border:1px solid ' + borderColor + '; background-color: ' + backgroundColor + '">';
+            for (var i = 0; i < lon; i++) {
+                str += JSON.stringify(k[i]) + ': <span style="color:yellow">' + JSON.stringify(o[k[i]]) + "</span><br>";
             }
             str += '</div>';
             write(str);
         };
 
-        var hide = function(){
+        var hide = function () {
             document.getElementById("ajsrConsole-container").setAttribute("style", "display: none");
         };
-        var show = function(){
+        var show = function () {
             document.getElementById("ajsrConsole-container").setAttribute("style", "display: block");
         };
 
@@ -421,7 +419,7 @@ function cancelRequest() {
             }
 
         }
-        
+
         // -------
         // init
         // -------
@@ -624,21 +622,21 @@ function cancelRequest() {
             printObj: printObj,
             obj: printObj,
             write: write,
-            error:error,
+            error: error,
             success: success,
-            setMaxObjLength: function(num) {
+            setMaxObjLength: function (num) {
                 defaults.maxObjLength = num;
-                success("maxObjLength was set to "+ num +"!" );
+                success("maxObjLength was set to " + num + "!");
             },
             br: br,
             setPrintStrategy: setPrintStrategy,
             hide: hide,
             show: show,
-            fontSize: function(num){
+            fontSize: function (num) {
                 if (!num) num = defaults.fontSize;
-                el.style.fontSize = num +'px';
+                el.style.fontSize = num + 'px';
             },
-            preset: function(){
+            preset: function () {
                 this.setLogAlias("debug");
                 this.setConsoleAlias("Cnsl");
                 this.setBgColor("rgba(0,0,150,1)");
@@ -649,8 +647,8 @@ function cancelRequest() {
                 this.useColors();
                 this.printTime();
                 //this.filterJSErrors();
-                this.setMaxObjLength(100); 
-                this.fontSize(11); 
+                this.setMaxObjLength(100);
+                this.fontSize(11);
                 //this.setSize(700,100); 
                 this.autoHeight();
                 this.autoHeight();
