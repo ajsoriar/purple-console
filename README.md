@@ -22,9 +22,9 @@ Javascript component that prints logs in a DIV layer. It can be useful when deal
 ## 2 Include dependences
 
 ```bash
-$ yarn add purple-console
+yarn add purple-console
 # or
-$ npm install purple-console
+npm install purple-console
 ```
 
 ### 2.1 In your HTML
@@ -172,12 +172,11 @@ ajsrConsole.setLap("LAP TEXT!");
 | `success`               | - | -           |
 | `setMaxObjLength`      | 5 | Increases the allowed print length.          |
 | `br`                   | - | Prints a blank line.           |
-| `setPrintStrategy`     | timeout | -           |
+| `setPrintStrategy`     | timeout | 1, 2 delayed by timestamp or 3 delayed by timeout          |
 | `hide`     | - | Hides the console.           |
 | `show`     | - | Shows the console.          |
 | `fontSize`     | 11 | Sets the font size.          |
 | `preset`     | - | Sets a group of configuration options useful in my day by day work.        |
-
 
 ## 5 Development
 
@@ -187,15 +186,15 @@ ajsrConsole.setLap("LAP TEXT!");
 
 ### 5.2 Install grunt globally
 
-```javascript
-$ sudo npm install --unsafe-perm=true --allow-root
-$ sudo npm install -g grunt-cli
+```bash
+sudo npm install --unsafe-perm=true --allow-root
+sudo npm install -g grunt-cli
 ```
 
 ### 5.3 Build
 
-```javascript
-$ grunt build
+```bash
+grunt build
 ```
 
 ## 6 License
