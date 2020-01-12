@@ -99,7 +99,7 @@ function cancelRequest() {
     // pixelURL = null,
     var el = null
     var printFunction = null
-    var previousPrintAtemptTiemstamp = 0
+    var previousPrintAtemptTiemstamp = 0;
     var printAtemptTimeBoundary = 500
     var printAtemptBuffer = ''
     var timer = null
@@ -113,7 +113,7 @@ function cancelRequest() {
       var consoleID = 'ajsrConsole'
       var htmlString = ''
 
-      if (consoleType === 'TEXTAREA') {} else if (consoleType === 'CANVAS') {} else { // consoleType === "HTML"
+      if (consoleType == 'TEXTAREA') {} else if (consoleType === 'CANVAS') {} else { // consoleType === "HTML"
         htmlString = '<div id="' + consoleID + '" style="position: absolute;' +
                     'bottom: 0;' +
                     'left: 0;' +
