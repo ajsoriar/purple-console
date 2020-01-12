@@ -124,14 +124,15 @@ function cancelRequest() {
                     'height: 300px;' +
                     'background-color: #37006b;' +
                     'color: #ff8100;' +
-                    'font-family: Courier New, Courier, monospace;' +
+                    //'font-family: Courier New, Courier, monospace;' +
+                    'font-family: monospace;' +
                     'font-size: 11px;' +
                     'padding: 3px;' +
                     'z-index: 99999;' +
                     'overflow-x: hidden;' +
                     'overflow-y: auto;' +
                     //'border: 1px solid #ef3ffd;"><div id="' + consoleID + '-screen">Waiting for logs...</div></div>';
-                    'border: 1px solid #ef3ffd;">The purple console is waiting for logs...<br></div>';
+                    'border: 1px solid #ef3ffd;">The purple-console is waiting for logs...<br></div>';
             }
 
             createConsoleEl(htmlString);
@@ -250,7 +251,7 @@ function cancelRequest() {
         };
 
         var attachHTML = function (str) {
-            // // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
+            // Old aproach: Just do innerHTML ...and the UI gets freezes when debugging in a loop.
 
             // el.innerHTML += str;
             // refreshScroll();
@@ -267,8 +268,8 @@ function cancelRequest() {
 
         var directAttachHTML = function (str) {
             // Slows the system when doing many innerHtml operations in a loop. 
-            // I experienced this problem in a very slow platform and that is why 
-            // we go to 2 (delayed printing and timestamp approach)
+            // I experienced this problem in very slow platforms (Set-top boxes) 
+            // That is why we go to 2 (delayed printing and timestamp approach)
             el.innerHTML = printAtemptBuffer + str;
         };
 
