@@ -25,9 +25,13 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-remove-comments": "^0.1.6",
-    "grunt-replace": "^1.0.1"
+    "grunt-replace": "^1.0.1",
+    "eslint-config-standard": "^14.1.0"
   },
   "scripts": {
     "build": "grunt build"
+  },
+  "dependencies": {
+    
   }
 }

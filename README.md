@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/purple-console.svg)](https://badge.fury.io/js/purple-console)
 [![NuGet version](https://badge.fury.io/nu/purple-console.svg)](https://badge.fury.io/nu/purple-console)
-
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 [![NPM](https://nodei.co/npm/purple-console.png?downloads=true&stars=true)](https://nodei.co/npm/purple-console/)
 
 Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes that don't allow debugging.
