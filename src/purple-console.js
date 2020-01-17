@@ -99,7 +99,7 @@ function cancelRequest() {
     // pixelURL = null,
     var el = null
     var printFunction = null
-    var previousPrintAtemptTiemstamp = 0
+    var previousPrintAtemptTiemstamp = 0;
     var printAtemptTimeBoundary = 500
     var printAtemptBuffer = ''
     var timer = null
@@ -113,7 +113,7 @@ function cancelRequest() {
       var consoleID = 'ajsrConsole'
       var htmlString = ''
 
-      if (consoleType === 'TEXTAREA') {} else if (consoleType === 'CANVAS') {} else { // consoleType === "HTML"
+      if (consoleType == 'TEXTAREA') {} else if (consoleType === 'CANVAS') {} else { // consoleType === "HTML"
         htmlString = '<div id="' + consoleID + '" style="position: absolute;' +
                     'bottom: 0;' +
                     'left: 0;' +
@@ -183,8 +183,9 @@ function cancelRequest() {
 
             ajsrRequest( "GET", BASE_URL +"/imglog/log.jpg", params );
 
-            */
-    }
+              ajsrServerIpPort("192.168.3.15", "9000");
+        */
+      }
 
     var write = function (str, color) {
       if (defaults.useColors === true && color != null) {
@@ -197,12 +198,12 @@ function cancelRequest() {
     var error = function (str) {
       if (!str) str = 'KO'
       attachHTML('<span style="color:red">' + str + '</span><br>')
-    }
-
-    var success = function (str) {
-      if (!str) str = 'OK'
-      attachHTML('<span style="color:limegreen">' + str + '</span><br>')
-    }
+      }
+ 
+      var success = function (str) {
+        if (!str) str = 'OK'
+        attachHTML('<span style="color:limegreen">' + str + '</span><br>')
+      }
 
     // ----------------------------------
     // - Printing strategies start here -
@@ -373,6 +374,40 @@ function cancelRequest() {
       write(str)
     }
 
+      var debugObj = function (p_1, p_2, p_3, p_4, p_5) {
+
+        // console.log(typeof( p_1 )); // text
+        // console.log(typeof( p_2 )); // json
+        // console.log(typeof( p_3 )); // border color
+        // console.log(typeof( p_4 )); // bg color
+        // console.log(typeof( p_5 )); // bg color
+
+        //if (!borderColor) borderColor = 'gray'
+        //if (!backgroundColor) backgroundColor = 'transparent'
+
+          if ( typeof( p_1 ) == 'string' ) {
+            if ( !p_3 ) p_3 = 'gray';
+            if ( !p_5 ) p_5 = 'white';
+            attachHTML('<span style="color: '+ p_5 +'; background-color: '+ p_3 +'; padding: 1px 3px;">' + arguments[0] + '</span><br>');
+            printObj(p_2, p_3, p_4 );
+          } else {
+            printObj(p_1, p_2, p_3,);
+          }
+
+      };
+
+      /*    
+        // debugObj({a:"1"})
+        // debugObj({a:"1"},1,16)
+        // debugObj("Hello", {a:"1"}, 1 , 16)
+        // debugObj("Hello",{a:"1"},"red", "black","black");
+
+        debugObj("LOL", myObj,"red","rgba(0,0,0,0.5)");
+        debugObj(myObj,"red","rgba(0,0,0,0.5)");
+        debugObj(myObj,"red");
+        debugObj(myObj);
+      */
+ 
     var hide = function () {
       document.getElementById('ajsrConsole-container').setAttribute('style', 'display: none')
     }
@@ -393,8 +428,8 @@ function cancelRequest() {
     if (document.body != null) { // <script> alocated in <body>
       defaultStart()
     } else { // <script> allocated in <head> will wait for <body> creation to attach the UI
-      console.error('[ajsrConsole] document.body is null!')
-      console.error("[ajsrConsole] purple-console code was imported in <HEAD>. Let's wait to document creation")
+      console.log('[ajsrConsole] document.body is null!')
+      console.log("[ajsrConsole] purple-console code was imported in <HEAD>. Let's wait to document creation")
 
       if (window.onload) {
         var currentOnLoad = window.onload
@@ -584,7 +619,7 @@ function cancelRequest() {
       },
 
       setLap: function (label) {
-        if (!label) console.error('Label is mandatory!')
+        if (!label) console.log('Label is mandatory!')
         if (!this.data.startTime) this.startTime()
 
         var now = Date.now()
@@ -609,8 +644,9 @@ function cancelRequest() {
 
       filterJSErrors: filterJSErrors,
       printObj: printObj,
-      obj: printObj,
-      write: write,
+        obj: printObj,
+        debugObj: debugObj,
+        write: write,
       error: error,
       success: success,
       setMaxObjLength: function (num) {
@@ -651,8 +687,11 @@ function cancelRequest() {
   // window.log = window.ajsrConsole.log;
 
   // Ussage example:
-  // > ajsrConsole.log("Hello world!");
-}())
+    // > ajsrConsole.log("Hello world!");
+
+    window['debugObj'] = window.ajsrConsole.debugObj;
+
+  }())
 
 /*
 ajsrConsole.filterJSErrors();
