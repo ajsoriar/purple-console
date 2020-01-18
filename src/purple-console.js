@@ -413,7 +413,7 @@ function cancelRequest() {
                     p_5 +
                     "; background-color: " +
                     p_3 +
-                    '; padding: 1px 3px;">' +
+                    '; padding: 3px 3px 2px 3px;">' +
                     arguments[0] +
                     "</span><br>"
                 );
