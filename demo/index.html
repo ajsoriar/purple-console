@@ -7,24 +7,66 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>purple-console.js demo</title>
     <style>
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
         body{
             background-color: rgb(202, 202, 177);
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+
+            /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
+            background: #b5bdc8; /* Old browsers */
+            background: -moz-linear-gradient(-45deg,  #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(-45deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(135deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+        }
+        .btn{
+            margin: 5px;
+            display: block;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid gray;
         }
     </style>
 
 </head>
 
 <body>
-    <h1>purple-console.js demo</h1>
-    <img src="./purple-console.logo.png" ></img>
-    <hr>
-    <button onclick="applyPreset()">ajsrConsole.preset()</button>
+    <table>
+        <tr>
+            <td><img src="./purple-console.logo.png" style="width: 80px;" ></img></td>
+            <td><h1>purple-console.js demo</h1></td>
+        </tr>
+    </table>
+    <button class="btn" onclick="ajsrConsole.cls()">ajsrConsole.cls()</button>
+    <button class="btn" onclick="ajsrConsole.preset()">ajsrConsole.preset()</button>
+    <button class="btn" onclick="ajsrConsole.printTime()">ajsrConsole.printTime()</button>
+    <button class="btn" onclick="debug('Hello world')">debug('Hello world')</button>
+    <button class="btn" onclick="ajsrConsole.toggleOpacity();">ajsrConsole.toggleOpacity();</button>
+    <button class="btn" onclick="ajsrConsole.autoHeight();">ajsrConsole.autoHeight();</button>
+    <button class="btn" onclick="ajsrConsole.error('ERROR TEXT');">ajsrConsole.error('ERROR TEXT');</button>
+    <button class="btn" onclick="ajsrConsole.useColors()">ajsrConsole.useColors()</button>
+    <button class="btn" onclick="ajsrConsole.move('UP')">ajsrConsole.move('UP')</button>
+    <button class="btn" onclick="ajsrConsole.move('DOWN');">ajsrConsole.move('DOWN');</button>
+    <button class="btn" onclick="ajsrConsole.move('LEFT');">ajsrConsole.move('LEFT');</button>
+    <button class="btn" onclick="ajsrConsole.move('RIGHT')">ajsrConsole.move('RIGHT')</button>
+    <button class="btn" onclick="ajsrConsole.error()">ajsrConsole.error()</button>
+    <button class="btn" onclick="ajsrConsole.success()">ajsrConsole.success()</button>
+    <button class="btn" onclick=""></button>
+    <button class="btn" onclick=""></button>
+    <button class="btn" onclick=""></button>
+    <button class="btn" onclick=""></button>
+    <button class="btn" onclick=""></button>
+    <button class="btn" onclick=""></button>
+
     <script src="../src/purple-console.js"></script>
     <script>
-
-        var applyPreset = function() {
-            ajsrConsole.preset();
-        };
 
         ajsrConsole.filterJSErrors();
 
@@ -85,20 +127,20 @@
         debug.printObj(myObj);
 
         var counter = 1000;
-/*
-        function countDown() {
-            if (counter > 0) {
-                setTimeout(function () {
 
-                    //console.log(counter);
-                    log("Hello world! counter: " + counter);
-                    counter--;
-                    countDown(counter);
-                }, 100);
-            }
-        }
-        countDown();
-*/
+        // function countDown() {
+        //     if (counter > 0) {
+        //         setTimeout(function () {
+
+        //             //console.log(counter);
+        //             log("Hello world! counter: " + counter);
+        //             counter--;
+        //             countDown(counter);
+        //         }, 100);
+        //     }
+        // }
+        // countDown();
+
         var lap = 0;
         function addLap() {
             if (counter > 0 && lap < 10) {
@@ -106,9 +148,19 @@
                     lap++;
                     ajsrConsole.setLap("LAP " + lap);
                     addLap();
+
+                    if ( lap === 3 ) ajsrConsole.autoHeight();
+                    if ( lap === 7 ) ajsrConsole.setSize(700);
                 }, 2000);
             } else {
+                ajsrConsole.br();
                 ajsrConsole.printLaps();
+                ajsrConsole.br();
+                debugObj("LOL", myObj,"red","rgba(0,0,0,0.5)");
+                debugObj(myObj,"#2196f3","rgb(64, 29, 197)");
+                debugObj(myObj,"red");
+                debugObj(myObj);
+                debugObj("Printing the list of Laps", ajsrConsole.data.laps, "green","rgba(0,0,0,0.5)");
             }
         }
         addLap();
