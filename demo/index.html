@@ -32,11 +32,13 @@
         }
 
         .btn{
-            margin: 5px;
+            margin: 3px;
+            border-radius: 5px;
             display: block;
-            padding: 10px 14px;
+            padding: 7px 10px;
             font-size: 14px;
             border: 1px solid gray;
+            border-bottom: 2px solid #5d5d5d;
 
             /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ebf1f6+0,abd3ee+50,89c3eb+51,d5ebfb+100;Blue+Gloss+%234 */
             background: rgb(235,241,246); /* Old browsers */
@@ -49,7 +51,6 @@
             background: -ms-linear-gradient(top,  rgba(235,241,246,1) 0%,rgba(171,211,238,1) 50%,rgba(137,195,235,1) 51%,rgba(213,235,251,1) 100%); /* IE10 preview */
             background: linear-gradient(to bottom,  rgba(235,241,246,1) 0%,rgba(171,211,238,1) 50%,rgba(137,195,235,1) 51%,rgba(213,235,251,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-8 */
-
         }
 
         .btn:hover{
@@ -80,6 +81,8 @@
             <td><h1>purple-console.js demo</h1></td>
         </tr>
     </table>
+    
+    <button class="btn" onclick="window.doStuff();">Start again ...</button>
     <button class="btn" onclick="ajsrConsole.cls()">ajsrConsole.cls()</button>
     <button class="btn" onclick="ajsrConsole.preset()">ajsrConsole.preset()</button>
     <button class="btn" onclick="ajsrConsole.printTime()">ajsrConsole.printTime()</button>
@@ -94,114 +97,119 @@
     <button class="btn" onclick="ajsrConsole.move('RIGHT')">ajsrConsole.move('RIGHT')</button>
     <button class="btn" onclick="ajsrConsole.error()">ajsrConsole.error()</button>
     <button class="btn" onclick="ajsrConsole.success()">ajsrConsole.success()</button>
+<!--   
     <button class="btn" onclick=""></button>
     <button class="btn" onclick=""></button>
     <button class="btn" onclick=""></button>
     <button class="btn" onclick=""></button>
     <button class="btn" onclick=""></button>
-    <button class="btn" onclick=""></button>
-
+-->
     <script src="../src/purple-console.js"></script>
     <script src="./purple-console.js"></script>
-    
+
     <script>
 
-        ajsrConsole.filterJSErrors();
+        
+        var doStuff = function() {
+            ajsrConsole.filterJSErrors();
 
-        //throw new Error("this is not an error");
-        ajsrConsole.setLogAlias("debug");
-        ajsrConsole.setBgColor("rgba(0,0,150,1)");
-        ajsrConsole.setBorderColor("rgba(0,255,255,1)");
-        ajsrConsole.setTextColor("rgba(255,255,255,1)");                                                                          
-        ajsrConsole.toggleOpacity();
-        ajsrConsole.printTime();
-        debug("CONSOLE");
-        ajsrConsole.printTime(false);
-        ajsrConsole.move("UP");
-        ajsrConsole.move("LEFT");
-        ajsrConsole.move("RIGHT");
-        ajsrConsole.autoHeight();
-        ajsrConsole.useColors();
-        debug("CONSOLE !!!");
-        debug("CONSOLE color1", "yellow");
-        ajsrConsole.printTime();
-        ajsrConsole.useColors(false);
-        debug("CONSOLE color2", "yellow");
-        ajsrConsole.toggleOpacity();
-        ajsrConsole.setSize(400,500);
-        ajsrConsole.useColors();
-        debug("Start!!", "green");
-        ajsrConsole.error("ERROR TEXT");
-        ajsrConsole.success("SUCCESS TEXT");
-        ajsrConsole.error();
-        ajsrConsole.success();
-        //ajsrConsole.useColors(false);
+            //throw new Error("this is not an error");
+            ajsrConsole.setLogAlias("debug");
+            ajsrConsole.setBgColor("rgba(0,0,150,1)");
+            ajsrConsole.setBorderColor("rgba(0,255,255,1)");
+            ajsrConsole.setTextColor("rgba(255,255,255,1)");                                                                          
+            ajsrConsole.toggleOpacity();
+            ajsrConsole.printTime();
+            debug("CONSOLE");
+            ajsrConsole.printTime(false);
+            ajsrConsole.move("UP");
+            ajsrConsole.move("LEFT");
+            ajsrConsole.move("RIGHT");
+            ajsrConsole.autoHeight();
+            ajsrConsole.useColors();
+            debug("CONSOLE !!!");
+            debug("CONSOLE color1", "yellow");
+            ajsrConsole.printTime();
+            ajsrConsole.useColors(false);
+            debug("CONSOLE color2", "yellow");
+            ajsrConsole.toggleOpacity();
+            ajsrConsole.setSize(400,500);
+            ajsrConsole.useColors();
+            debug("Start!!", "green");
+            ajsrConsole.error("ERROR TEXT");
+            ajsrConsole.success("SUCCESS TEXT");
+            ajsrConsole.error();
+            ajsrConsole.success();
+            //ajsrConsole.useColors(false);
 
-        var myObj = {
-            "1": "a-11",
-            "2": "a-11",
-            "3": "a-11",
-            "4": "a-11",
-            "5": "a-11",
-            "6": "a-11"
-        };
+            var myObj = {
+                "1": "a-11",
+                "2": "a-11",
+                "3": "a-11",
+                "4": "a-11",
+                "5": "a-11",
+                "6": "a-11"
+            };
 
-        ajsrConsole.printObj(myObj);
+            ajsrConsole.printObj(myObj);
 
-        ajsrConsole.setMaxObjLength(200);
+            ajsrConsole.setMaxObjLength(200);
 
-        ajsrConsole.printObj(myObj);
+            ajsrConsole.printObj(myObj);
 
-        var myObj = {
-            "1": "a-11",
-            "2": "a-11",
-            "3": {
-                "b1": "b-11",
-                "b2": "b-11",
-                "b3": "b-11",
+            var myObj = {
+                "1": "a-11",
+                "2": "a-11",
+                "3": {
+                    "b1": "b-11",
+                    "b2": "b-11",
+                    "b3": "b-11",
+                }
+            };
+
+            debug.printObj(myObj);
+
+            var counter = 1000;
+
+            // function countDown() {
+            //     if (counter > 0) {
+            //         setTimeout(function () {
+
+            //             //console.log(counter);
+            //             log("Hello world! counter: " + counter);
+            //             counter--;
+            //             countDown(counter);
+            //         }, 100);
+            //     }
+            // }
+            // countDown();
+
+            var lap = 0;
+            function addLap() {
+                if (counter > 0 && lap < 10) {
+                    setTimeout(function () {
+                        lap++;
+                        ajsrConsole.setLap("LAP " + lap);
+                        addLap();
+
+                        if ( lap === 3 ) ajsrConsole.autoHeight();
+                        if ( lap === 7 ) ajsrConsole.setSize(700);
+                    }, 2000);
+                } else {
+                    ajsrConsole.br();
+                    ajsrConsole.printLaps();
+                    ajsrConsole.br();
+                    debugObj("LOL", myObj,"red","rgba(0,0,0,0.5)");
+                    debugObj(myObj,"#2196f3","rgb(64, 29, 197)");
+                    debugObj(myObj,"red");
+                    debugObj(myObj);
+                    debugObj("Printing the list of Laps", ajsrConsole.data.laps, "green","rgba(0,0,0,0.5)");
+                }
             }
-        };
-
-        debug.printObj(myObj);
-
-        var counter = 1000;
-
-        // function countDown() {
-        //     if (counter > 0) {
-        //         setTimeout(function () {
-
-        //             //console.log(counter);
-        //             log("Hello world! counter: " + counter);
-        //             counter--;
-        //             countDown(counter);
-        //         }, 100);
-        //     }
-        // }
-        // countDown();
-
-        var lap = 0;
-        function addLap() {
-            if (counter > 0 && lap < 10) {
-                setTimeout(function () {
-                    lap++;
-                    ajsrConsole.setLap("LAP " + lap);
-                    addLap();
-
-                    if ( lap === 3 ) ajsrConsole.autoHeight();
-                    if ( lap === 7 ) ajsrConsole.setSize(700);
-                }, 2000);
-            } else {
-                ajsrConsole.br();
-                ajsrConsole.printLaps();
-                ajsrConsole.br();
-                debugObj("LOL", myObj,"red","rgba(0,0,0,0.5)");
-                debugObj(myObj,"#2196f3","rgb(64, 29, 197)");
-                debugObj(myObj,"red");
-                debugObj(myObj);
-                debugObj("Printing the list of Laps", ajsrConsole.data.laps, "green","rgba(0,0,0,0.5)");
-            }
+            addLap();
         }
-        addLap();
+            
+        doStuff();
 
     </script>
     
