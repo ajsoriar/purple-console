@@ -9,7 +9,7 @@ Javascript component that prints logs in a DIV layer. It can be useful when deal
 
 ![purple-console initialization example](./demo/purple-console_example-1.gif?raw=true "purple-console initialization example")
 
-<!-- This example in plunker: <https://plnkr.co/edit/bhnvU3?p=preview> -->
+Live example: <http://subidote.com/purple-console/>
 
 ## 1 Quick start
 
