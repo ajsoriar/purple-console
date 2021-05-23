@@ -4,6 +4,8 @@ webpack.production.config.js
 .eslintrc
 .gitignore
 .babelrc
+.npmignore
+Gruntfile.js
 scripts
 src
 demo
@@ -20,3 +22,8 @@ node_modules/
 .DS_Store
 storybook-static
 _.*
+*.lock
+Gruntfile.js
+go-server
+*.old
+*.OLD
