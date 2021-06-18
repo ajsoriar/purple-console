@@ -1,11 +1,12 @@
 /**
  * purple-console
  * javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.
- * @version 1.2.6 - 2020-01-18
+ * @version 1.2.7 - 2021-06-18
  * @link https://github.com/ajsoriar/purple-console
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
+
 
 (function () {
     console.log("[ajsrConsole] plug-in!");
@@ -238,7 +239,7 @@
                     p_5 +
                     "; background-color: " +
                     p_3 +
-                    '; padding: 1px 3px;">' +
+                    '; padding: 3px 3px 2px 3px;">' +
                     arguments[0] +
                     "</span><br>"
                 );
@@ -497,4 +498,4 @@
     window.ajsrConsole = ajsrConsole();
 
     window["debugObj"] = window.ajsrConsole.debugObj;
-})();
+})();

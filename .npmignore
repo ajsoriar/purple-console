@@ -6,6 +6,7 @@ webpack.production.config.js
 .babelrc
 .npmignore
 Gruntfile.js
+gruntfile.js
 scripts
 src
 demo
@@ -21,9 +22,11 @@ node_modules/
 /.*
 .DS_Store
 storybook-static
+_.
 _.*
 *.lock
 Gruntfile.js
 go-server
 *.old
 *.OLD
+.prettierrc
