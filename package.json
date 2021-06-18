@@ -1,37 +1,37 @@
 {
-  "name": "purple-console",
-  "version": "1.2.6",
-  "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
-  "main": "dist/purple-consoli.min.js",
-  "repository": "https://github.com/ajsoriar/purple-console.git",
-  "keywords": [
-    "console.log",
-    "javascript console",
-    "js-console",
-    "log",
-    "console",
-    "SmartTv",
-    "STB console",
-    "div log"
-  ],
-  "author": "Andres J. Soria R. <ajsoriar@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "grunt": "~0.4",
-    "grunt-cleanempty": "^1.0.3",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-remove-comments": "^0.1.6",
-    "grunt-replace": "^1.0.1",
-    "eslint-config-standard": "^14.1.0"
-  },
-  "scripts": {
-    "build": "grunt build"
-  },
-  "dependencies": {
-    
-  }
+    "name": "purple-console",
+    "version": "1.2.7",
+    "description": "Javascript component that prints logs in a DIV layer. It can be useful when dealing with special hardware like Smart TVs or Set-Top Boxes which do not allow debugging.",
+    "main": "dist/purple-consoli.min.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": "https://github.com/ajsoriar/purple-console.git",
+    "keywords": [
+        "console.log",
+        "javascript console",
+        "js-console",
+        "log",
+        "console",
+        "SmartTv",
+        "STB console",
+        "div log"
+    ],
+    "author": "Andres J. Soria R. <ajsoriar@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "grunt": "~1.3",
+        "grunt-cleanempty": "^1.0.3",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-remove-comments": "^0.1.6",
+        "grunt-replace": "^1.0.1"
+    },
+    "scripts": {
+        "build": "grunt build"
+    },
+    "dependencies": {}
 }

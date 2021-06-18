@@ -29,4 +29,8 @@ yarn-error.log*
 .zip
 .sign
 *.wgt
+yarn.lock
 .vscode
+.jsbeautifyrc
+.vscode
+.jsbeautifyrc
